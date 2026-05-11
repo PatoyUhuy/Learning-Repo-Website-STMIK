@@ -13,6 +13,7 @@ async function createCandidateWithReferralClaim(browser: Browser): Promise<{ can
   await candidatePage.getByTestId('input-password').fill(password);
   await candidatePage.getByTestId('input-password-confirm').fill(password);
   await candidatePage.getByTestId('btn-submit-step1').click();
+  // Baris 17 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
   await expect(candidatePage.getByTestId('step2-form')).toBeVisible({ timeout: 10000 });
 
   // Step 2: Personal info
@@ -21,6 +22,7 @@ async function createCandidateWithReferralClaim(browser: Browser): Promise<{ can
   await candidatePage.getByTestId('input-city').fill('Jakarta');
   await candidatePage.getByTestId('input-province').fill('DKI Jakarta');
   await candidatePage.getByTestId('btn-submit-step2').click();
+  // Baris 26 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
   await expect(candidatePage.getByTestId('step3-form')).toBeVisible({ timeout: 10000 });
 
   // Step 3: Education
@@ -29,14 +31,17 @@ async function createCandidateWithReferralClaim(browser: Browser): Promise<{ can
   const prodiRadios = candidatePage.locator('input[type="radio"][name="prodi_id"]');
   await prodiRadios.first().click();
   await candidatePage.getByTestId('btn-submit-step3').click();
+  // Baris 35 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
   await expect(candidatePage.getByTestId('step4-form')).toBeVisible({ timeout: 10000 });
 
   // Step 4: Source tracking with referral claim (teacher_alumni triggers referral claim)
   await candidatePage.getByTestId('select-source-type').selectOption('teacher_alumni');
   // Wait for detail container to be visible
+  // Baris 41 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
   await expect(candidatePage.locator('#source_detail_container')).toBeVisible();
   await candidatePage.getByTestId('input-source-detail').fill('Pak Ahmad dari SMA Negeri 1');
   await candidatePage.getByTestId('btn-submit-step4').click();
+  // Baris 45 digunakan untuk: Memastikan URL browser sudah berubah/sesuai dengan yang diharapkan
   await expect(candidatePage).toHaveURL('/portal', { timeout: 10000 });
 
   await candidatePage.close();
@@ -45,6 +50,7 @@ async function createCandidateWithReferralClaim(browser: Browser): Promise<{ can
   const adminPage = await browser.newPage();
   await adminPage.goto('/test/login/admin');
   await adminPage.goto('/admin/candidates?search=' + encodeURIComponent(uniqueEmail));
+  // Baris 54 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
   await expect(adminPage.getByTestId('candidates-page')).toBeVisible();
   await adminPage.waitForTimeout(1000);
 
@@ -56,52 +62,66 @@ async function createCandidateWithReferralClaim(browser: Browser): Promise<{ can
   return { candidateId, page: adminPage };
 }
 
+// Baris 66 digunakan untuk: Mengelompokkan skenario pengujian tentang "Referral Claims Management"
 test.describe('Referral Claims Management', () => {
+  // Baris 68 digunakan untuk: Mengelompokkan skenario pengujian tentang "Referral Claims List"
   test.describe('Referral Claims List', () => {
+    // Baris 70 digunakan untuk: Memulai eksekusi pengujian dengan judul "admin can access referral claims page"
     test('admin can access referral claims page', async ({ browser }) => {
       const adminPage = await browser.newPage();
       await adminPage.goto('/test/login/admin');
       await adminPage.goto('/admin/referral-claims');
 
+      // Baris 76 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(adminPage.getByTestId('referral-claims-page')).toBeVisible();
 
       await adminPage.close();
     });
 
+    // Baris 82 digunakan untuk: Memulai eksekusi pengujian dengan judul "referral claims page shows unverified claims"
     test('referral claims page shows unverified claims', async ({ browser }) => {
       // Create a candidate with referral claim
       const { candidateId, page: adminPage } = await createCandidateWithReferralClaim(browser);
 
       // Go to referral claims page
       await adminPage.goto('/admin/referral-claims');
+      // Baris 89 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(adminPage.getByTestId('referral-claims-page')).toBeVisible();
 
       // Should see the claim in the list
       const claimRow = adminPage.getByTestId(`claim-row-${candidateId}`);
+      // Baris 94 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(claimRow).toBeVisible();
+      // Baris 96 digunakan untuk: Memastikan ada teks tertentu yang muncul di dalam elemen tersebut
       await expect(claimRow).toContainText('Pak Ahmad dari SMA Negeri 1');
 
       await adminPage.close();
     });
   });
 
+  // Baris 103 digunakan untuk: Mengelompokkan skenario pengujian tentang "Link Referral Claim"
   test.describe('Link Referral Claim', () => {
+    // Baris 105 digunakan untuk: Memulai eksekusi pengujian dengan judul "admin can open link referrer modal"
     test('admin can open link referrer modal', async ({ browser }) => {
       const { candidateId, page: adminPage } = await createCandidateWithReferralClaim(browser);
 
       await adminPage.goto('/admin/referral-claims');
+      // Baris 110 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(adminPage.getByTestId('referral-claims-page')).toBeVisible();
 
       // Click link button
       await adminPage.getByTestId(`btn-link-${candidateId}`).click();
 
       // Modal should appear
+      // Baris 117 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(adminPage.locator('#link-modal')).toBeVisible();
+      // Baris 119 digunakan untuk: Memastikan ada teks tertentu yang muncul di dalam elemen tersebut
       await expect(adminPage.locator('#modal-claim-text')).toContainText('Pak Ahmad');
 
       await adminPage.close();
     });
 
+    // Baris 125 digunakan untuk: Memulai eksekusi pengujian dengan judul "admin can link claim to existing referrer"
     test('admin can link claim to existing referrer', async ({ browser }) => {
       // First create a referrer
       const adminPage = await browser.newPage();
@@ -113,6 +133,7 @@ test.describe('Referral Claims Management', () => {
 
       // Open add referrer modal
       await adminPage.getByTestId('add-referrer-button').click();
+      // Baris 137 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(adminPage.getByTestId('add-referrer-modal')).toBeVisible();
 
       // Create referrer
@@ -130,6 +151,7 @@ test.describe('Referral Claims Management', () => {
       // Go to referral claims and link
       await candidatePage.goto('/admin/referral-claims');
       await candidatePage.getByTestId(`btn-link-${candidateId}`).click();
+      // Baris 155 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(candidatePage.locator('#link-modal')).toBeVisible();
 
       // Select the referrer - find option containing the name
@@ -151,17 +173,21 @@ test.describe('Referral Claims Management', () => {
 
       // Page should refresh and claim should be removed from list
       await candidatePage.waitForTimeout(2000);
+      // Baris 177 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(candidatePage.getByTestId(`claim-row-${candidateId}`)).not.toBeVisible();
 
       await candidatePage.close();
     });
   });
 
+  // Baris 184 digunakan untuk: Mengelompokkan skenario pengujian tentang "Invalid Referral Claim"
   test.describe('Invalid Referral Claim', () => {
+    // Baris 186 digunakan untuk: Memulai eksekusi pengujian dengan judul "admin can mark claim as invalid"
     test('admin can mark claim as invalid', async ({ browser }) => {
       const { candidateId, page: adminPage } = await createCandidateWithReferralClaim(browser);
 
       await adminPage.goto('/admin/referral-claims');
+      // Baris 191 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(adminPage.getByTestId('referral-claims-page')).toBeVisible();
 
       // Accept the confirmation dialog
@@ -172,6 +198,7 @@ test.describe('Referral Claims Management', () => {
 
       // Page should refresh and claim should be removed
       await adminPage.waitForTimeout(2000);
+      // Baris 202 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(adminPage.getByTestId(`claim-row-${candidateId}`)).not.toBeVisible();
 
       await adminPage.close();

@@ -512,7 +512,7 @@ func ProgramCard(prog ProgramItem) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "\" class=\"px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700\">Simpan</button></div></form></div></dialog></div><script>\n\t\t// Set up event listener for edit buttons using event delegation\n\t\tdocument.addEventListener('click', function(e) {\n\t\t\tif (e.target.classList.contains('edit-program-btn')) {\n\t\t\t\tvar modalId = e.target.getAttribute('data-modal-id');\n\t\t\t\tif (modalId) {\n\t\t\t\t\tdocument.getElementById(modalId).showModal();\n\t\t\t\t}\n\t\t\t}\n\t\t});\n\t</script>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "\" class=\"px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700\">Simpan</button></div></form></div></dialog></div><script>\r\n\t\t// Set up event listener for edit buttons using event delegation\r\n\t\tdocument.addEventListener('click', function(e) {\r\n\t\t\tif (e.target.classList.contains('edit-program-btn')) {\r\n\t\t\t\tvar modalId = e.target.getAttribute('data-modal-id');\r\n\t\t\t\tif (modalId) {\r\n\t\t\t\t\tdocument.getElementById(modalId).showModal();\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t});\r\n\t</script>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

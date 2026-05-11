@@ -1,10 +1,13 @@
 import { test, expect } from '@playwright/test';
 import { SettingsUsersPage } from './pages';
 
+// Baris 5 digunakan untuk: Mengelompokkan skenario pengujian tentang "Settings - User Management"
 test.describe('Settings - User Management', () => {
   let usersPage: SettingsUsersPage;
 
+  // Baris 9 digunakan untuk: Menjalankan fungsi persiapan (setup) SEBELUM setiap test dijalankan
   test.beforeEach(async ({ page }) => {
+    // Baris 11 digunakan untuk: Menyiapkan file helper halaman (Page Object) untuk mempermudah interaksi
     usersPage = new SettingsUsersPage(page);
     // Login as admin before each test
     await usersPage.login('admin');
@@ -12,18 +15,23 @@ test.describe('Settings - User Management', () => {
     await usersPage.expectPageLoaded();
   });
 
+  // Baris 19 digunakan untuk: Mengelompokkan skenario pengujian tentang "Page Load"
   test.describe('Page Load', () => {
+    // Baris 21 digunakan untuk: Memulai eksekusi pengujian dengan judul "should display users page with stats and table"
     test('should display users page with stats and table', async () => {
       await usersPage.expectStatsVisible();
+      // Baris 24 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(usersPage.usersTable).toBeVisible();
     });
 
+    // Baris 28 digunakan untuk: Memulai eksekusi pengujian dengan judul "should display user list from database"
     test('should display user list from database', async () => {
       // Verify at least one user is displayed
       const userIds = await usersPage.getAllUserIds();
       expect(userIds.length).toBeGreaterThan(0);
     });
 
+    // Baris 35 digunakan untuk: Memulai eksekusi pengujian dengan judul "should display correct stats totals"
     test('should display correct stats totals', async () => {
       // Get counts from stats
       const totalText = await usersPage.statTotal.textContent();
@@ -46,7 +54,9 @@ test.describe('Settings - User Management', () => {
     });
   });
 
+  // Baris 58 digunakan untuk: Mengelompokkan skenario pengujian tentang "Role Change"
   test.describe('Role Change', () => {
+    // Baris 60 digunakan untuk: Memulai eksekusi pengujian dengan judul "should change user role and verify UI update"
     test('should change user role and verify UI update', async ({ page }) => {
       // Get first user ID that is not the logged-in user
       const userIds = await usersPage.getAllUserIds();
@@ -88,7 +98,9 @@ test.describe('Settings - User Management', () => {
     });
   });
 
+  // Baris 102 digunakan untuk: Mengelompokkan skenario pengujian tentang "Status Toggle"
   test.describe('Status Toggle', () => {
+    // Baris 104 digunakan untuk: Memulai eksekusi pengujian dengan judul "should toggle user active status and verify UI update"
     test('should toggle user active status and verify UI update', async ({ page }) => {
       // Get first user ID
       const userIds = await usersPage.getAllUserIds();
@@ -130,7 +142,9 @@ test.describe('Settings - User Management', () => {
     });
   });
 
+  // Baris 146 digunakan untuk: Mengelompokkan skenario pengujian tentang "Supervisor Assignment"
   test.describe('Supervisor Assignment', () => {
+    // Baris 148 digunakan untuk: Memulai eksekusi pengujian dengan judul "should assign supervisor to user and verify UI update"
     test('should assign supervisor to user and verify UI update', async ({ page }) => {
       // Get all user IDs
       const userIds = await usersPage.getAllUserIds();

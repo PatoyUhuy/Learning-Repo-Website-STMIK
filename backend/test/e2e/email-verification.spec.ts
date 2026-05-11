@@ -8,6 +8,7 @@ function generateUniqueEmail(prefix: string): string {
   return `${prefix}${timestamp}${random}@example.com`;
 }
 
+// Baris 12 digunakan untuk: Mengelompokkan skenario pengujian tentang "Email Verification"
 test.describe('Email Verification', () => {
   let testEmail: string;
   const testPassword = 'testpassword123';
@@ -15,7 +16,9 @@ test.describe('Email Verification', () => {
 
   test.beforeAll(async ({ browser }) => {
     // Create a test candidate through registration
+    // Baris 20 digunakan untuk: Membuka tab browser baru yang masih bersih (kosong)
     const page = await browser.newPage();
+    // Baris 22 digunakan untuk: Menyiapkan file helper halaman (Page Object) untuk mempermudah interaksi
     const registrationPage = new RegistrationPage(page);
     testEmail = generateUniqueEmail('emailverify');
 
@@ -50,40 +53,51 @@ test.describe('Email Verification', () => {
       await registrationPage.fillStep4('google');
     }
 
+    // Baris 57 digunakan untuk: Menutup tab browser setelah pengujian selesai agar tidak memakan memori
     await page.close();
   });
 
+  // Baris 61 digunakan untuk: Memulai eksekusi pengujian dengan judul "should show verification page with send OTP button"
   test('should show verification page with send OTP button', async ({ page }) => {
     // Login first
+    // Baris 64 digunakan untuk: Menyiapkan file helper halaman (Page Object) untuk mempermudah interaksi
     const loginPage = new LoginPage(page);
     await loginPage.goto();
     await loginPage.login(testEmail, testPassword);
     await loginPage.expectRedirectToPortal();
 
     // Navigate to email verification page
+    // Baris 71 digunakan untuk: Membuka browser dan menavigasi ke halaman "/portal/verify-email"
     await page.goto('/portal/verify-email');
 
     // Check page loaded
+    // Baris 75 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(page.getByTestId('verify-email-page')).toBeVisible();
 
     // Check email is displayed
+    // Baris 79 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(page.getByText(testEmail)).toBeVisible();
 
     // Check send OTP button is visible
+    // Baris 83 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(page.getByTestId('send-otp-btn')).toBeVisible();
   });
 
+  // Baris 87 digunakan untuk: Memulai eksekusi pengujian dengan judul "should show OTP form after clicking send button"
   test('should show OTP form after clicking send button', async ({ page }) => {
     // Login first
+    // Baris 90 digunakan untuk: Menyiapkan file helper halaman (Page Object) untuk mempermudah interaksi
     const loginPage = new LoginPage(page);
     await loginPage.goto();
     await loginPage.login(testEmail, testPassword);
     await loginPage.expectRedirectToPortal();
 
     // Navigate to email verification page
+    // Baris 97 digunakan untuk: Membuka browser dan menavigasi ke halaman "/portal/verify-email"
     await page.goto('/portal/verify-email');
 
     // Click send OTP button
+    // Baris 101 digunakan untuk: Mencari elemen di layar lalu mengkliknya (simulasi klik mouse)
     await page.getByTestId('send-otp-btn').click();
 
     // Wait for HTMX response - should show OTP input form
@@ -102,17 +116,21 @@ test.describe('Email Verification', () => {
     expect(otpVisible || errorVisible).toBeTruthy();
   });
 
+  // Baris 120 digunakan untuk: Memulai eksekusi pengujian dengan judul "should show error for invalid OTP"
   test('should show error for invalid OTP', async ({ page }) => {
     // Login first
+    // Baris 123 digunakan untuk: Menyiapkan file helper halaman (Page Object) untuk mempermudah interaksi
     const loginPage = new LoginPage(page);
     await loginPage.goto();
     await loginPage.login(testEmail, testPassword);
     await loginPage.expectRedirectToPortal();
 
     // Navigate to email verification page
+    // Baris 130 digunakan untuk: Membuka browser dan menavigasi ke halaman "/portal/verify-email"
     await page.goto('/portal/verify-email');
 
     // Click send OTP button
+    // Baris 134 digunakan untuk: Mencari elemen di layar lalu mengkliknya (simulasi klik mouse)
     await page.getByTestId('send-otp-btn').click();
     await page.waitForTimeout(1000);
 
@@ -121,18 +139,22 @@ test.describe('Email Verification', () => {
     if (await otpInput.isVisible()) {
       // Enter invalid OTP
       await otpInput.fill('000000');
+      // Baris 143 digunakan untuk: Mencari elemen di layar lalu mengkliknya (simulasi klik mouse)
       await page.getByTestId('confirm-otp-btn').click();
 
       // Wait for response
       await page.waitForTimeout(1000);
 
       // Should show error message
+      // Baris 150 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(page.getByTestId('otp-error')).toBeVisible();
     }
   });
 
+  // Baris 155 digunakan untuk: Memulai eksekusi pengujian dengan judul "should navigate to verification from dashboard checklist"
   test('should navigate to verification from dashboard checklist', async ({ page }) => {
     // Login first
+    // Baris 158 digunakan untuk: Menyiapkan file helper halaman (Page Object) untuk mempermudah interaksi
     const loginPage = new LoginPage(page);
     await loginPage.goto();
     await loginPage.login(testEmail, testPassword);
@@ -143,7 +165,9 @@ test.describe('Email Verification', () => {
 
     if (await verifyEmailLink.isVisible()) {
       await verifyEmailLink.click();
+      // Baris 169 digunakan untuk: Memastikan URL browser sudah berubah/sesuai dengan yang diharapkan
       await expect(page).toHaveURL('/portal/verify-email');
+      // Baris 171 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(page.getByTestId('verify-email-page')).toBeVisible();
     }
   });

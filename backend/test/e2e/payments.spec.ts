@@ -63,6 +63,7 @@ async function setupCandidateWithPayment(browser: Browser): Promise<{
   await candidatePage.getByTestId('input-password').fill(password);
   await candidatePage.getByTestId('input-password-confirm').fill(password);
   await candidatePage.getByTestId('btn-submit-step1').click();
+  // Baris 67 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
   await expect(candidatePage.getByTestId('step2-form')).toBeVisible({ timeout: 10000 });
 
   await candidatePage.getByTestId('input-name').fill(`PayTest ${uniqueId}`);
@@ -70,16 +71,19 @@ async function setupCandidateWithPayment(browser: Browser): Promise<{
   await candidatePage.getByTestId('input-city').fill('Jakarta');
   await candidatePage.getByTestId('input-province').fill('DKI Jakarta');
   await candidatePage.getByTestId('btn-submit-step2').click();
+  // Baris 75 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
   await expect(candidatePage.getByTestId('step3-form')).toBeVisible({ timeout: 10000 });
 
   await candidatePage.getByTestId('input-high-school').fill('SMA Test');
   await candidatePage.getByTestId('select-graduation-year').selectOption('2025');
   await candidatePage.locator('input[type="radio"][name="prodi_id"]').first().click();
   await candidatePage.getByTestId('btn-submit-step3').click();
+  // Baris 82 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
   await expect(candidatePage.getByTestId('step4-form')).toBeVisible({ timeout: 10000 });
 
   await candidatePage.getByTestId('select-source-type').selectOption('instagram');
   await candidatePage.getByTestId('btn-submit-step4').click();
+  // Baris 87 digunakan untuk: Memastikan URL browser sudah berubah/sesuai dengan yang diharapkan
   await expect(candidatePage).toHaveURL('/portal', { timeout: 10000 });
   await candidatePage.close();
 
@@ -87,6 +91,7 @@ async function setupCandidateWithPayment(browser: Browser): Promise<{
   const adminPage = await browser.newPage();
   await adminPage.goto('/test/login/admin');
   await adminPage.goto('/admin/candidates?search=' + encodeURIComponent(uniqueEmail));
+  // Baris 95 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
   await expect(adminPage.getByTestId('candidates-page')).toBeVisible();
   await adminPage.waitForTimeout(1000);
 
@@ -99,12 +104,14 @@ async function setupCandidateWithPayment(browser: Browser): Promise<{
   const financePage = await browser.newPage();
   await financePage.goto('/test/login/finance');
   await financePage.goto(`/admin/finance/billings/create?candidate_id=${candidateId}`);
+  // Baris 108 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
   await expect(financePage.getByTestId('billing-form-page')).toBeVisible();
 
   await financePage.getByTestId('select-billing-type').selectOption('registration');
   await financePage.getByTestId('input-amount').fill('500000');
   await financePage.getByTestId('input-due-date').fill('2026-06-01');
   await financePage.getByTestId('btn-submit').click();
+  // Baris 115 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
   await expect(financePage.getByTestId('billing-detail-page')).toBeVisible({ timeout: 10000 });
 
   // Extract billing ID from URL
@@ -116,6 +123,7 @@ async function setupCandidateWithPayment(browser: Browser): Promise<{
   const portalPage = await browser.newPage();
   await portalPage.goto('/test/login/candidate?email=' + encodeURIComponent(uniqueEmail));
   await portalPage.goto('/portal/payments');
+  // Baris 127 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
   await expect(portalPage.getByTestId('payments-page')).toBeVisible();
 
   // Find the billing's upload form and submit proof
@@ -127,6 +135,7 @@ async function setupCandidateWithPayment(browser: Browser): Promise<{
     await uploadForm.locator('input[name="amount"]').fill('500000');
     await uploadForm.locator('input[name="proof"]').setInputFiles(getTestProofPath());
     await uploadForm.locator('button[type="submit"]').click();
+    // Baris 139 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
     await expect(portalPage.getByTestId('payments-page')).toBeVisible({ timeout: 10000 });
   } else {
     // Try the generic upload button approach
@@ -137,6 +146,7 @@ async function setupCandidateWithPayment(browser: Browser): Promise<{
       await portalPage.locator('input[name="amount"]').first().fill('500000');
       await portalPage.locator('input[name="proof"]').first().setInputFiles(getTestProofPath());
       await portalPage.locator('button[type="submit"]').first().click();
+      // Baris 150 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
       await expect(portalPage.getByTestId('payments-page')).toBeVisible({ timeout: 10000 });
     }
   }
@@ -149,40 +159,62 @@ async function setupCandidateWithPayment(browser: Browser): Promise<{
   return { candidateId, billingId, paymentPage };
 }
 
+// Baris 163 digunakan untuk: Mengelompokkan skenario pengujian tentang "Payments - Portal Display"
 test.describe('Payments - Portal Display', () => {
+  // Baris 165 digunakan untuk: Menjalankan fungsi persiapan (setup) SEBELUM setiap test dijalankan
   test.beforeEach(async ({ page }) => {
+    // Baris 167 digunakan untuk: Membuka browser dan menavigasi ke halaman "/test/login/candidate"
     await page.goto('/test/login/candidate');
+    // Baris 169 digunakan untuk: Memastikan URL browser sudah berubah/sesuai dengan yang diharapkan
     await expect(page).toHaveURL('/portal');
   });
 
+  // Baris 173 digunakan untuk: Memulai eksekusi pengujian dengan judul "should display payments page with summary cards"
   test('should display payments page with summary cards', async ({ page }) => {
+    // Baris 175 digunakan untuk: Membuka browser dan menavigasi ke halaman "/portal/payments"
     await page.goto('/portal/payments');
 
+    // Baris 178 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(page.getByTestId('payments-page')).toBeVisible();
+    // Baris 180 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(page.getByTestId('payment-summary')).toBeVisible();
 
+    // Baris 183 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(page.locator('text=Total Tagihan')).toBeVisible();
+    // Baris 185 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(page.locator('text=Sudah Dibayar')).toBeVisible();
+    // Baris 187 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(page.locator('text=Menunggu Verifikasi')).toBeVisible();
   });
 
+  // Baris 191 digunakan untuk: Memulai eksekusi pengujian dengan judul "should display bank info"
   test('should display bank info', async ({ page }) => {
+    // Baris 193 digunakan untuk: Membuka browser dan menavigasi ke halaman "/portal/payments"
     await page.goto('/portal/payments');
 
+    // Baris 196 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(page.getByTestId('bank-info')).toBeVisible();
+    // Baris 198 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(page.locator('text=Bank Syariah Indonesia')).toBeVisible();
+    // Baris 200 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(page.locator('text=Yayasan Tazkia')).toBeVisible();
   });
 
+  // Baris 204 digunakan untuk: Memulai eksekusi pengujian dengan judul "should display payments list"
   test('should display payments list', async ({ page }) => {
+    // Baris 206 digunakan untuk: Membuka browser dan menavigasi ke halaman "/portal/payments"
     await page.goto('/portal/payments');
 
+    // Baris 209 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(page.getByTestId('payments-list')).toBeVisible();
+    // Baris 211 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(page.locator('text=Daftar Tagihan')).toBeVisible();
   });
 });
 
+// Baris 216 digunakan untuk: Mengelompokkan skenario pengujian tentang "Payments - With Billing"
 test.describe('Payments - With Billing', () => {
+  // Baris 218 digunakan untuk: Memulai eksekusi pengujian dengan judul "should show empty state when no billings"
   test('should show empty state when no billings', async ({ browser }) => {
     // Register a fresh candidate (no billings created yet)
     const uniqueId = `${Date.now()}${Math.random().toString(36).slice(2, 8)}`;
@@ -195,6 +227,7 @@ test.describe('Payments - With Billing', () => {
     await candidatePage.getByTestId('input-password').fill(password);
     await candidatePage.getByTestId('input-password-confirm').fill(password);
     await candidatePage.getByTestId('btn-submit-step1').click();
+    // Baris 231 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
     await expect(candidatePage.getByTestId('step2-form')).toBeVisible({ timeout: 10000 });
 
     await candidatePage.getByTestId('input-name').fill(`EmptyPay ${uniqueId}`);
@@ -202,50 +235,64 @@ test.describe('Payments - With Billing', () => {
     await candidatePage.getByTestId('input-city').fill('Jakarta');
     await candidatePage.getByTestId('input-province').fill('DKI Jakarta');
     await candidatePage.getByTestId('btn-submit-step2').click();
+    // Baris 239 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
     await expect(candidatePage.getByTestId('step3-form')).toBeVisible({ timeout: 10000 });
 
     await candidatePage.getByTestId('input-high-school').fill('SMA Test');
     await candidatePage.getByTestId('select-graduation-year').selectOption('2025');
     await candidatePage.locator('input[type="radio"][name="prodi_id"]').first().click();
     await candidatePage.getByTestId('btn-submit-step3').click();
+    // Baris 246 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
     await expect(candidatePage.getByTestId('step4-form')).toBeVisible({ timeout: 10000 });
 
     await candidatePage.getByTestId('select-source-type').selectOption('instagram');
     await candidatePage.getByTestId('btn-submit-step4').click();
+    // Baris 251 digunakan untuk: Memastikan URL browser sudah berubah/sesuai dengan yang diharapkan
     await expect(candidatePage).toHaveURL('/portal', { timeout: 10000 });
 
     await candidatePage.goto('/portal/payments');
+    // Baris 255 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(candidatePage.getByTestId('payments-page')).toBeVisible();
+    // Baris 257 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(candidatePage.locator('text=Belum ada tagihan')).toBeVisible();
 
     await candidatePage.close();
   });
 });
 
+// Baris 264 digunakan untuk: Mengelompokkan skenario pengujian tentang "Admin Payment Review"
 test.describe('Admin Payment Review', () => {
+  // Baris 266 digunakan untuk: Memulai eksekusi pengujian dengan judul "finance user can access payment review page"
   test('finance user can access payment review page', async ({ browser }) => {
     const financePage = await browser.newPage();
     await financePage.goto('/test/login/finance');
     await financePage.goto('/admin/finance/payments');
 
+    // Baris 272 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(financePage.getByTestId('finance-payments-page')).toBeVisible();
+    // Baris 274 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(financePage.getByTestId('stat-pending')).toBeVisible();
+    // Baris 276 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(financePage.getByTestId('stat-approved')).toBeVisible();
+    // Baris 278 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(financePage.getByTestId('stat-rejected')).toBeVisible();
 
     await financePage.close();
   });
 
+  // Baris 284 digunakan untuk: Memulai eksekusi pengujian dengan judul "admin can also access payment review page"
   test('admin can also access payment review page', async ({ browser }) => {
     const adminPage = await browser.newPage();
     await adminPage.goto('/test/login/admin');
     await adminPage.goto('/admin/finance/payments');
 
+    // Baris 290 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(adminPage.getByTestId('finance-payments-page')).toBeVisible();
 
     await adminPage.close();
   });
 
+  // Baris 296 digunakan untuk: Memulai eksekusi pengujian dengan judul "consultant cannot access payment review page"
   test('consultant cannot access payment review page', async ({ browser }) => {
     const consultantPage = await browser.newPage();
     await consultantPage.goto('/test/login/consultant');
@@ -256,6 +303,7 @@ test.describe('Admin Payment Review', () => {
     await consultantPage.close();
   });
 
+  // Baris 307 digunakan untuk: Memulai eksekusi pengujian dengan judul "finance user can filter payments by status"
   test('finance user can filter payments by status', async ({ browser }) => {
     const financePage = await browser.newPage();
     await financePage.goto('/test/login/finance');
@@ -264,16 +312,19 @@ test.describe('Admin Payment Review', () => {
     await financePage.getByTestId('select-status').selectOption('pending');
     await financePage.getByTestId('btn-filter').click();
 
+    // Baris 316 digunakan untuk: Memastikan URL browser sudah berubah/sesuai dengan yang diharapkan
     await expect(financePage).toHaveURL(/status=pending/);
 
     await financePage.close();
   });
 
+  // Baris 322 digunakan untuk: Memulai eksekusi pengujian dengan judul "finance user can approve payment"
   test('finance user can approve payment', async ({ browser }) => {
     const { billingId, paymentPage } = await setupCandidateWithPayment(browser);
 
     // Go to payments review page
     await paymentPage.goto('/admin/finance/payments?status=pending');
+    // Baris 328 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(paymentPage.getByTestId('finance-payments-page')).toBeVisible();
 
     // Find approve button for any pending payment
@@ -284,17 +335,20 @@ test.describe('Admin Payment Review', () => {
       await approveBtn.click();
 
       // Should redirect back to payment list or show updated status
+      // Baris 339 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
       await expect(paymentPage.getByTestId('finance-payments-page')).toBeVisible({ timeout: 10000 });
     }
 
     await paymentPage.close();
   });
 
+  // Baris 346 digunakan untuk: Memulai eksekusi pengujian dengan judul "finance user can reject payment with reason"
   test('finance user can reject payment with reason', async ({ browser }) => {
     const { billingId, paymentPage } = await setupCandidateWithPayment(browser);
 
     // Go to payments review page
     await paymentPage.goto('/admin/finance/payments?status=pending');
+    // Baris 352 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(paymentPage.getByTestId('finance-payments-page')).toBeVisible();
 
     // Find reject button for any pending payment
@@ -306,6 +360,7 @@ test.describe('Admin Payment Review', () => {
 
       // Fill rejection reason in the modal
       const reasonInput = paymentPage.locator('[data-testid^="input-reject-reason-"]').first();
+      // Baris 364 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
       await expect(reasonInput).toBeVisible({ timeout: 5000 });
       await reasonInput.fill('Bukti transfer tidak valid');
 
@@ -314,6 +369,7 @@ test.describe('Admin Payment Review', () => {
       await confirmBtn.click();
 
       // Should redirect back to payment list
+      // Baris 373 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
       await expect(paymentPage.getByTestId('finance-payments-page')).toBeVisible({ timeout: 10000 });
     }
 
@@ -321,7 +377,9 @@ test.describe('Admin Payment Review', () => {
   });
 });
 
+// Baris 381 digunakan untuk: Mengelompokkan skenario pengujian tentang "Candidate Search API"
 test.describe('Candidate Search API', () => {
+  // Baris 383 digunakan untuk: Memulai eksekusi pengujian dengan judul "search API returns results for valid query"
   test('search API returns results for valid query', async ({ browser }) => {
     const financePage = await browser.newPage();
     await financePage.goto('/test/login/finance');
@@ -335,6 +393,7 @@ test.describe('Candidate Search API', () => {
     await financePage.close();
   });
 
+  // Baris 397 digunakan untuk: Memulai eksekusi pengujian dengan judul "search API requires minimum 2 characters"
   test('search API requires minimum 2 characters', async ({ browser }) => {
     const financePage = await browser.newPage();
     await financePage.goto('/test/login/finance');

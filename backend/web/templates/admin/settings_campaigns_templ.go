@@ -982,11 +982,11 @@ func getChannelLabel(ch string) string {
 
 func showEditCampaignModal(modalID string) templ.ComponentScript {
 	return templ.ComponentScript{
-		Name: `__templ_showEditCampaignModal_1936`,
-		Function: `function __templ_showEditCampaignModal_1936(modalID){document.getElementById(modalID).showModal();
+		Name: `__templ_showEditCampaignModal_dab9`,
+		Function: `function __templ_showEditCampaignModal_dab9(modalID){document.getElementById(modalID).showModal();
 }`,
-		Call:       templ.SafeScript(`__templ_showEditCampaignModal_1936`, modalID),
-		CallInline: templ.SafeScriptInline(`__templ_showEditCampaignModal_1936`, modalID),
+		Call:       templ.SafeScript(`__templ_showEditCampaignModal_dab9`, modalID),
+		CallInline: templ.SafeScriptInline(`__templ_showEditCampaignModal_dab9`, modalID),
 	}
 }
 

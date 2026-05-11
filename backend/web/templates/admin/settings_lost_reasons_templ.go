@@ -462,11 +462,11 @@ func intToString(i int) string {
 
 func showEditModal(id string) templ.ComponentScript {
 	return templ.ComponentScript{
-		Name: `__templ_showEditModal_3b19`,
-		Function: `function __templ_showEditModal_3b19(id){document.getElementById('edit-lost-reason-modal-' + id).showModal();
+		Name: `__templ_showEditModal_8e2b`,
+		Function: `function __templ_showEditModal_8e2b(id){document.getElementById('edit-lost-reason-modal-' + id).showModal();
 }`,
-		Call:       templ.SafeScript(`__templ_showEditModal_3b19`, id),
-		CallInline: templ.SafeScriptInline(`__templ_showEditModal_3b19`, id),
+		Call:       templ.SafeScript(`__templ_showEditModal_8e2b`, id),
+		CallInline: templ.SafeScriptInline(`__templ_showEditModal_8e2b`, id),
 	}
 }
 

@@ -513,7 +513,7 @@ func CategoryCard(cat CategoryItem) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 47, "\" class=\"px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700\">Simpan</button></div></form></div></dialog></div><script>\n\t\tdocument.addEventListener('click', function(e) {\n\t\t\tif (e.target.classList.contains('edit-category-btn')) {\n\t\t\t\tvar modalId = e.target.getAttribute('data-modal-id');\n\t\t\t\tif (modalId) {\n\t\t\t\t\tdocument.getElementById(modalId).showModal();\n\t\t\t\t}\n\t\t\t}\n\t\t});\n\t</script>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 47, "\" class=\"px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700\">Simpan</button></div></form></div></dialog></div><script>\r\n\t\tdocument.addEventListener('click', function(e) {\r\n\t\t\tif (e.target.classList.contains('edit-category-btn')) {\r\n\t\t\t\tvar modalId = e.target.getAttribute('data-modal-id');\r\n\t\t\t\tif (modalId) {\r\n\t\t\t\t\tdocument.getElementById(modalId).showModal();\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t});\r\n\t</script>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -806,7 +806,7 @@ func ObstacleCard(obs ObstacleItem) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 72, "\" class=\"px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700\">Simpan</button></div></form></div></dialog></div><script>\n\t\tdocument.addEventListener('click', function(e) {\n\t\t\tif (e.target.classList.contains('edit-obstacle-btn')) {\n\t\t\t\tvar modalId = e.target.getAttribute('data-modal-id');\n\t\t\t\tif (modalId) {\n\t\t\t\t\tdocument.getElementById(modalId).showModal();\n\t\t\t\t}\n\t\t\t}\n\t\t});\n\t</script>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 72, "\" class=\"px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700\">Simpan</button></div></form></div></dialog></div><script>\r\n\t\tdocument.addEventListener('click', function(e) {\r\n\t\t\tif (e.target.classList.contains('edit-obstacle-btn')) {\r\n\t\t\t\tvar modalId = e.target.getAttribute('data-modal-id');\r\n\t\t\t\tif (modalId) {\r\n\t\t\t\t\tdocument.getElementById(modalId).showModal();\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t});\r\n\t</script>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

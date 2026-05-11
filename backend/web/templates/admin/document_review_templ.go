@@ -449,8 +449,8 @@ func DocumentReviewList(data layouts.PageData, filter DocumentFilter, documents 
 
 func showApproveModal(docID string) templ.ComponentScript {
 	return templ.ComponentScript{
-		Name: `__templ_showApproveModal_1902`,
-		Function: `function __templ_showApproveModal_1902(docID){if (confirm('Setujui dokumen ini?')) {
+		Name: `__templ_showApproveModal_01f9`,
+		Function: `function __templ_showApproveModal_01f9(docID){if (confirm('Setujui dokumen ini?')) {
 		// Submit approval
 		const form = document.createElement('form');
 		form.method = 'POST';
@@ -464,19 +464,19 @@ func showApproveModal(docID string) templ.ComponentScript {
 		form.submit();
 	}
 }`,
-		Call:       templ.SafeScript(`__templ_showApproveModal_1902`, docID),
-		CallInline: templ.SafeScriptInline(`__templ_showApproveModal_1902`, docID),
+		Call:       templ.SafeScript(`__templ_showApproveModal_01f9`, docID),
+		CallInline: templ.SafeScriptInline(`__templ_showApproveModal_01f9`, docID),
 	}
 }
 
 func showRejectModal(docID string) templ.ComponentScript {
 	return templ.ComponentScript{
-		Name: `__templ_showRejectModal_7382`,
-		Function: `function __templ_showRejectModal_7382(docID){document.getElementById('reject-document-id').value = docID;
+		Name: `__templ_showRejectModal_47d7`,
+		Function: `function __templ_showRejectModal_47d7(docID){document.getElementById('reject-document-id').value = docID;
 	document.getElementById('reject-modal').classList.remove('hidden');
 }`,
-		Call:       templ.SafeScript(`__templ_showRejectModal_7382`, docID),
-		CallInline: templ.SafeScriptInline(`__templ_showRejectModal_7382`, docID),
+		Call:       templ.SafeScript(`__templ_showRejectModal_47d7`, docID),
+		CallInline: templ.SafeScriptInline(`__templ_showRejectModal_47d7`, docID),
 	}
 }
 

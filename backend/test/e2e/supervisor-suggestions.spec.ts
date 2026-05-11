@@ -14,6 +14,7 @@ async function setupCandidateWithInteraction(browser: Browser): Promise<{ candid
   await candidatePage.getByTestId('input-password').fill(password);
   await candidatePage.getByTestId('input-password-confirm').fill(password);
   await candidatePage.getByTestId('btn-submit-step1').click();
+  // Baris 18 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
   await expect(candidatePage.getByTestId('step2-form')).toBeVisible({ timeout: 10000 });
 
   // Step 2: Personal info
@@ -22,6 +23,7 @@ async function setupCandidateWithInteraction(browser: Browser): Promise<{ candid
   await candidatePage.getByTestId('input-city').fill('Jakarta');
   await candidatePage.getByTestId('input-province').fill('DKI Jakarta');
   await candidatePage.getByTestId('btn-submit-step2').click();
+  // Baris 27 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
   await expect(candidatePage.getByTestId('step3-form')).toBeVisible({ timeout: 10000 });
 
   // Step 3: Education
@@ -30,11 +32,13 @@ async function setupCandidateWithInteraction(browser: Browser): Promise<{ candid
   const prodiRadios = candidatePage.locator('input[type="radio"][name="prodi_id"]');
   await prodiRadios.first().click();
   await candidatePage.getByTestId('btn-submit-step3').click();
+  // Baris 36 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
   await expect(candidatePage.getByTestId('step4-form')).toBeVisible({ timeout: 10000 });
 
   // Step 4: Source tracking - complete registration
   await candidatePage.getByTestId('select-source-type').selectOption('instagram');
   await candidatePage.getByTestId('btn-submit-step4').click();
+  // Baris 42 digunakan untuk: Memastikan URL browser sudah berubah/sesuai dengan yang diharapkan
   await expect(candidatePage).toHaveURL('/portal', { timeout: 10000 });
 
   await candidatePage.close();
@@ -43,20 +47,24 @@ async function setupCandidateWithInteraction(browser: Browser): Promise<{ candid
   const consultantPage = await browser.newPage();
   await consultantPage.goto('/test/login/admin');
   await consultantPage.goto('/admin/candidates?search=' + encodeURIComponent(uniqueEmail));
+  // Baris 51 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
   await expect(consultantPage.getByTestId('candidates-page')).toBeVisible();
 
   // Wait for search results to load
   const viewLink = consultantPage.locator('[data-testid^="view-candidate-"]').first();
+  // Baris 56 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
   await expect(viewLink).toBeVisible({ timeout: 10000 });
   const testId = await viewLink.getAttribute('data-testid');
   const candidateId = testId?.replace('view-candidate-', '') || '';
 
   // Navigate to candidate detail and create interaction
   await consultantPage.goto(`/admin/candidates/${candidateId}`);
+  // Baris 63 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
   await expect(consultantPage.getByTestId('candidate-detail-page')).toBeVisible();
 
   // Create an interaction
   await consultantPage.goto(`/admin/candidates/${candidateId}/interaction`);
+  // Baris 68 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
   await expect(consultantPage.getByTestId('interaction-form-page')).toBeVisible();
 
   // Click on WhatsApp radio button and category radio button
@@ -65,6 +73,7 @@ async function setupCandidateWithInteraction(browser: Browser): Promise<{ candid
   await consultantPage.getByTestId('input-remarks').fill('Test interaction for suggestion');
   await consultantPage.getByTestId('btn-submit').click();
 
+  // Baris 77 digunakan untuk: Memastikan URL browser sudah berubah/sesuai dengan yang diharapkan
   await expect(consultantPage).toHaveURL(`/admin/candidates/${candidateId}`, { timeout: 10000 });
 
   // Get interaction ID from timeline
@@ -75,8 +84,11 @@ async function setupCandidateWithInteraction(browser: Browser): Promise<{ candid
   return { candidateId, interactionId, page: consultantPage };
 }
 
+// Baris 88 digunakan untuk: Mengelompokkan skenario pengujian tentang "Supervisor Suggestions"
 test.describe('Supervisor Suggestions', () => {
+  // Baris 90 digunakan untuk: Mengelompokkan skenario pengujian tentang "Add Suggestion"
   test.describe('Add Suggestion', () => {
+    // Baris 92 digunakan untuk: Memulai eksekusi pengujian dengan judul "supervisor should see add suggestion form on interactions without suggestions"
     test('supervisor should see add suggestion form on interactions without suggestions', async ({ browser }) => {
       const { candidateId, page: consultantPage } = await setupCandidateWithInteraction(browser);
       await consultantPage.close();
@@ -85,16 +97,21 @@ test.describe('Supervisor Suggestions', () => {
       const supervisorPage = await browser.newPage();
       await supervisorPage.goto('/test/login/supervisor');
       await supervisorPage.goto(`/admin/candidates/${candidateId}`);
+      // Baris 101 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(supervisorPage.getByTestId('candidate-detail-page')).toBeVisible();
 
       // Should see add suggestion form
+      // Baris 105 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(supervisorPage.getByTestId('add-suggestion-form')).toBeVisible();
+      // Baris 107 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(supervisorPage.getByTestId('input-suggestion')).toBeVisible();
+      // Baris 109 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(supervisorPage.getByTestId('btn-add-suggestion')).toBeVisible();
 
       await supervisorPage.close();
     });
 
+    // Baris 115 digunakan untuk: Memulai eksekusi pengujian dengan judul "consultant should not see add suggestion form"
     test('consultant should not see add suggestion form', async ({ browser }) => {
       const { candidateId, page: adminPage } = await setupCandidateWithInteraction(browser);
       await adminPage.close();
@@ -103,14 +120,17 @@ test.describe('Supervisor Suggestions', () => {
       const consultantPage = await browser.newPage();
       await consultantPage.goto('/test/login/consultant');
       await consultantPage.goto(`/admin/candidates/${candidateId}`);
+      // Baris 124 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(consultantPage.getByTestId('candidate-detail-page')).toBeVisible();
 
       // Consultant should NOT see the add suggestion form
+      // Baris 128 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(consultantPage.getByTestId('add-suggestion-form')).not.toBeVisible();
 
       await consultantPage.close();
     });
 
+    // Baris 134 digunakan untuk: Memulai eksekusi pengujian dengan judul "supervisor should be able to add suggestion"
     test('supervisor should be able to add suggestion', async ({ browser }) => {
       const { candidateId, page: consultantPage } = await setupCandidateWithInteraction(browser);
       await consultantPage.close();
@@ -119,6 +139,7 @@ test.describe('Supervisor Suggestions', () => {
       const supervisorPage = await browser.newPage();
       await supervisorPage.goto('/test/login/supervisor');
       await supervisorPage.goto(`/admin/candidates/${candidateId}`);
+      // Baris 143 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(supervisorPage.getByTestId('candidate-detail-page')).toBeVisible();
 
       // Add a suggestion
@@ -130,12 +151,15 @@ test.describe('Supervisor Suggestions', () => {
       await supervisorPage.waitForTimeout(1000);
 
       // Suggestion should now be visible
+      // Baris 155 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(supervisorPage.getByTestId('interaction-suggestion')).toBeVisible();
+      // Baris 157 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(supervisorPage.locator(`text=${suggestionText}`)).toBeVisible();
 
       await supervisorPage.close();
     });
 
+    // Baris 163 digunakan untuk: Memulai eksekusi pengujian dengan judul "admin should be able to add suggestion"
     test('admin should be able to add suggestion', async ({ browser }) => {
       const { candidateId, page: consultantPage } = await setupCandidateWithInteraction(browser);
       await consultantPage.close();
@@ -144,9 +168,11 @@ test.describe('Supervisor Suggestions', () => {
       const adminPage = await browser.newPage();
       await adminPage.goto('/test/login/admin');
       await adminPage.goto(`/admin/candidates/${candidateId}`);
+      // Baris 172 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(adminPage.getByTestId('candidate-detail-page')).toBeVisible();
 
       // Admin should see add suggestion form
+      // Baris 176 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(adminPage.getByTestId('add-suggestion-form')).toBeVisible();
 
       // Add a suggestion
@@ -158,13 +184,16 @@ test.describe('Supervisor Suggestions', () => {
       await adminPage.waitForTimeout(1000);
 
       // Suggestion should now be visible
+      // Baris 188 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(adminPage.getByTestId('interaction-suggestion')).toBeVisible();
 
       await adminPage.close();
     });
   });
 
+  // Baris 195 digunakan untuk: Mengelompokkan skenario pengujian tentang "Mark As Read"
   test.describe('Mark As Read', () => {
+    // Baris 197 digunakan untuk: Memulai eksekusi pengujian dengan judul "consultant should be able to mark suggestion as read"
     test('consultant should be able to mark suggestion as read', async ({ browser }) => {
       // Create candidate and interaction
       const { candidateId, page: consultantPage } = await setupCandidateWithInteraction(browser);
@@ -185,10 +214,13 @@ test.describe('Supervisor Suggestions', () => {
       const newConsultantPage = await browser.newPage();
       await newConsultantPage.goto('/test/login/consultant');
       await newConsultantPage.goto(`/admin/candidates/${candidateId}`);
+      // Baris 218 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(newConsultantPage.getByTestId('candidate-detail-page')).toBeVisible();
 
       // Should see the suggestion with "Mark as read" button
+      // Baris 222 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(newConsultantPage.getByTestId('interaction-suggestion')).toBeVisible();
+      // Baris 224 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(newConsultantPage.getByTestId('btn-mark-read')).toBeVisible();
 
       // Click mark as read
@@ -198,13 +230,16 @@ test.describe('Supervisor Suggestions', () => {
       await newConsultantPage.waitForTimeout(1000);
 
       // Should now show "Sudah dibaca"
+      // Baris 234 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(newConsultantPage.locator('text=Sudah dibaca')).toBeVisible();
 
       await newConsultantPage.close();
     });
   });
 
+  // Baris 241 digunakan untuk: Mengelompokkan skenario pengujian tentang "Notification Badge"
   test.describe('Notification Badge', () => {
+    // Baris 243 digunakan untuk: Memulai eksekusi pengujian dengan judul "consultant should see unread suggestions badge in sidebar"
     test('consultant should see unread suggestions badge in sidebar', async ({ browser }) => {
       // Create candidate and interaction
       const { candidateId, page: consultantPage } = await setupCandidateWithInteraction(browser);
@@ -224,6 +259,7 @@ test.describe('Supervisor Suggestions', () => {
       const newConsultantPage = await browser.newPage();
       await newConsultantPage.goto('/test/login/consultant');
       await newConsultantPage.goto('/admin');
+      // Baris 263 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(newConsultantPage.getByTestId('admin-sidebar')).toBeVisible();
 
       // Check for unread suggestions badge

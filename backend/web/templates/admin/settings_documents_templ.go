@@ -448,11 +448,11 @@ func DocumentTypeRowOnly(dt DocumentTypeItem) templ.Component {
 
 func openEditModal(id string) templ.ComponentScript {
 	return templ.ComponentScript{
-		Name: `__templ_openEditModal_549a`,
-		Function: `function __templ_openEditModal_549a(id){document.getElementById('edit-doctype-modal-' + id).showModal();
+		Name: `__templ_openEditModal_d5da`,
+		Function: `function __templ_openEditModal_d5da(id){document.getElementById('edit-doctype-modal-' + id).showModal();
 }`,
-		Call:       templ.SafeScript(`__templ_openEditModal_549a`, id),
-		CallInline: templ.SafeScriptInline(`__templ_openEditModal_549a`, id),
+		Call:       templ.SafeScript(`__templ_openEditModal_d5da`, id),
+		CallInline: templ.SafeScriptInline(`__templ_openEditModal_d5da`, id),
 	}
 }
 

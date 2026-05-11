@@ -1,10 +1,13 @@
 import { test, expect } from '@playwright/test';
 import { SettingsProgramsPage } from './pages';
 
+// Baris 5 digunakan untuk: Mengelompokkan skenario pengujian tentang "Settings - Programs Management"
 test.describe('Settings - Programs Management', () => {
   let programsPage: SettingsProgramsPage;
 
+  // Baris 9 digunakan untuk: Menjalankan fungsi persiapan (setup) SEBELUM setiap test dijalankan
   test.beforeEach(async ({ page }) => {
+    // Baris 11 digunakan untuk: Menyiapkan file helper halaman (Page Object) untuk mempermudah interaksi
     programsPage = new SettingsProgramsPage(page);
     // Login as admin before each test
     await programsPage.login('admin');
@@ -12,15 +15,21 @@ test.describe('Settings - Programs Management', () => {
     await programsPage.expectPageLoaded();
   });
 
+  // Baris 19 digunakan untuk: Mengelompokkan skenario pengujian tentang "Page Load"
   test.describe('Page Load', () => {
+    // Baris 21 digunakan untuk: Memulai eksekusi pengujian dengan judul "should display programs page with grid"
     test('should display programs page with grid', async () => {
+      // Baris 23 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(programsPage.programsGrid).toBeVisible();
     });
 
+    // Baris 27 digunakan untuk: Memulai eksekusi pengujian dengan judul "should display add program button"
     test('should display add program button', async () => {
+      // Baris 29 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(programsPage.addProgramButton).toBeVisible();
     });
 
+    // Baris 33 digunakan untuk: Memulai eksekusi pengujian dengan judul "should display program list from database"
     test('should display program list from database', async () => {
       // Verify at least one program is displayed
       const programIds = await programsPage.getAllProgramIds();
@@ -28,7 +37,9 @@ test.describe('Settings - Programs Management', () => {
     });
   });
 
+  // Baris 41 digunakan untuk: Mengelompokkan skenario pengujian tentang "Program Display"
   test.describe('Program Display', () => {
+    // Baris 43 digunakan untuk: Memulai eksekusi pengujian dengan judul "should display program details correctly"
     test('should display program details correctly', async () => {
       const programIds = await programsPage.getAllProgramIds();
       expect(programIds.length).toBeGreaterThan(0);
@@ -38,21 +49,28 @@ test.describe('Settings - Programs Management', () => {
       await programsPage.expectProgramDisplayed(firstProgramId);
 
       // Verify additional fields are visible
+      // Baris 53 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(programsPage.getProgramStatusToggle(firstProgramId)).toBeVisible();
+      // Baris 55 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(programsPage.getProgramSpp(firstProgramId)).toBeVisible();
+      // Baris 57 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(programsPage.getProgramStudents(firstProgramId)).toBeVisible();
     });
 
+    // Baris 61 digunakan untuk: Memulai eksekusi pengujian dengan judul "should display edit and curriculum buttons for each program"
     test('should display edit and curriculum buttons for each program', async () => {
       const programIds = await programsPage.getAllProgramIds();
       expect(programIds.length).toBeGreaterThan(0);
 
       for (const programId of programIds) {
+        // Baris 67 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
         await expect(programsPage.getProgramEditButton(programId)).toBeVisible();
+        // Baris 69 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
         await expect(programsPage.getProgramCurriculumButton(programId)).toBeVisible();
       }
     });
 
+    // Baris 74 digunakan untuk: Memulai eksekusi pengujian dengan judul "should display program code, name, and level"
     test('should display program code, name, and level', async () => {
       const programIds = await programsPage.getAllProgramIds();
       expect(programIds.length).toBeGreaterThan(0);
@@ -70,10 +88,12 @@ test.describe('Settings - Programs Management', () => {
     });
   });
 
+  // Baris 92 digunakan untuk: Mengelompokkan skenario pengujian tentang "Program Status"
   test.describe('Program Status', () => {
     // Run status tests serially to avoid race conditions when multiple workers toggle the same prodi
     test.describe.configure({ mode: 'serial' });
 
+    // Baris 97 digunakan untuk: Memulai eksekusi pengujian dengan judul "should display status badge for each program"
     test('should display status badge for each program', async () => {
       const programIds = await programsPage.getAllProgramIds();
       expect(programIds.length).toBeGreaterThan(0);
@@ -85,6 +105,7 @@ test.describe('Settings - Programs Management', () => {
       }
     });
 
+    // Baris 109 digunakan untuk: Memulai eksekusi pengujian dengan judul "should toggle program status via HTMX"
     test('should toggle program status via HTMX', async () => {
       const programIds = await programsPage.getAllProgramIds();
       expect(programIds.length).toBeGreaterThan(0);
@@ -116,6 +137,7 @@ test.describe('Settings - Programs Management', () => {
       }
     });
 
+    // Baris 141 digunakan untuk: Memulai eksekusi pengujian dengan judul "should persist status toggle after page reload"
     test('should persist status toggle after page reload', async ({ page }) => {
       const programIds = await programsPage.getAllProgramIds();
       expect(programIds.length).toBeGreaterThan(0);
@@ -145,10 +167,12 @@ test.describe('Settings - Programs Management', () => {
     });
   });
 
+  // Baris 171 digunakan untuk: Mengelompokkan skenario pengujian tentang "Edit Program"
   test.describe('Edit Program', () => {
     // Run edit tests serially to avoid race conditions when multiple workers edit the same prodi
     test.describe.configure({ mode: 'serial' });
 
+    // Baris 176 digunakan untuk: Memulai eksekusi pengujian dengan judul "should open edit modal with current values"
     test('should open edit modal with current values', async () => {
       const programIds = await programsPage.getAllProgramIds();
       expect(programIds.length).toBeGreaterThan(0);
@@ -164,11 +188,15 @@ test.describe('Settings - Programs Management', () => {
       await programsPage.openEditProgramModal(programId);
 
       // Verify modal shows current values
+      // Baris 192 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
       await expect(programsPage.getEditProgramName(programId)).toHaveValue(currentName?.trim() || '');
+      // Baris 194 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
       await expect(programsPage.getEditProgramCode(programId)).toHaveValue(currentCode?.trim() || '');
+      // Baris 196 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
       await expect(programsPage.getEditProgramDegree(programId)).toHaveValue(currentLevel?.trim() || '');
     });
 
+    // Baris 200 digunakan untuk: Memulai eksekusi pengujian dengan judul "should update program name via HTMX"
     test('should update program name via HTMX', async ({ page }) => {
       const programIds = await programsPage.getAllProgramIds();
       expect(programIds.length).toBeGreaterThan(0);
@@ -197,15 +225,22 @@ test.describe('Settings - Programs Management', () => {
     });
   });
 
+  // Baris 229 digunakan untuk: Mengelompokkan skenario pengujian tentang "Add Program"
   test.describe('Add Program', () => {
+    // Baris 231 digunakan untuk: Memulai eksekusi pengujian dengan judul "should open add program modal"
     test('should open add program modal', async () => {
       await programsPage.openAddProgramModal();
+      // Baris 234 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(programsPage.addProgramModal).toBeVisible();
+      // Baris 236 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(programsPage.inputProgramName).toBeVisible();
+      // Baris 238 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(programsPage.inputProgramCode).toBeVisible();
+      // Baris 240 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(programsPage.inputProgramDegree).toBeVisible();
     });
 
+    // Baris 244 digunakan untuk: Memulai eksekusi pengujian dengan judul "should add new program via HTMX"
     test('should add new program via HTMX', async ({ page }) => {
       // Generate unique code to avoid conflicts
       const timestamp = Date.now().toString().slice(-4);
