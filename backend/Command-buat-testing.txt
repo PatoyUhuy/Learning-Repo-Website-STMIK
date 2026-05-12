@@ -1,0 +1,9 @@
+Macam-macam command testing di proyek ini
+
+#Command jalanin semua test .go
+go test -v ./...
+
+#Command jalanin test playwright (.ts)
+npx playwright test (Nama_Folder_DiBackend)/(Nama_Folder_FileTS)/(Nama.file.testing.)ts
+Contoh: npx playwright test test/e2e/health.spec.ts --headed
+*nb: (--headed) ditambahin biar bisa ngeliat proses automated testingnya)
