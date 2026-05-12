@@ -9,9 +9,9 @@
  * ============================================================================
  */
 
-// Baris 13 sampai 14 digunakan untuk: Import modul dari Playwright untuk menjalankan test
+// Kegunaan: Import modul dari Playwright untuk menjalankan test
 import { test, expect, Browser } from '@playwright/test';
-// Baris 15 digunakan untuk: Import Page Object Models (POM), yaitu kelas-kelas yang mewakili halaman web
+// Kegunaan: Import Page Object Models (POM), yaitu kelas-kelas yang mewakili halaman web
 import { RegistrationPage, LoginPage, PortalPage, CandidatesPage } from './pages';
 
 // ============================================================================

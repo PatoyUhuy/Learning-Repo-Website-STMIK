@@ -913,7 +913,7 @@ func ReassignCandidate(ctx context.Context, candidateID, newConsultantID, reassi
 	if oldConsultantID != nil {
 		oldID = *oldConsultantID
 	}
-	remarks := fmt.Sprintf("Kandidat dipindahkan dari konsultan sebelumnya")
+	remarks := "Kandidat dipindahkan dari konsultan sebelumnya"
 	if oldID == "" {
 		remarks = "Konsultan pertama kali ditugaskan"
 	}

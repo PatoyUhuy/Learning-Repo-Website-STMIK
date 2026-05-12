@@ -53,7 +53,7 @@ export class TestPortalPage extends BasePage {
     await expect(this.logoutButton).toBeVisible();
   }
 
-  async fillAndSubmitForm(value: string): Promise<Response | null> {
+  async fillAndSubmitForm(value: string) {
     await this.testInput.fill(value);
     const responsePromise = this.page.waitForResponse('/test/submit');
     await this.submitButton.click();

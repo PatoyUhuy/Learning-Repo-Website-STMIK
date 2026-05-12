@@ -62,16 +62,16 @@ const SCREENSHOT_DIR = path.join(__dirname, '../../docs/user-manual/screenshots'
 async function loginAs(page: Page, role: string) {
   // Uses test login endpoints (only available in test mode)
   if (role === 'candidate') {
-    // Baris 66 digunakan untuk: Membuka browser dan menavigasi ke halaman "${BASE_URL}/test/login/candidate"
+    // Kegunaan: Membuka browser dan menavigasi ke halaman "${BASE_URL}/test/login/candidate"
     await page.goto(`${BASE_URL}/test/login/candidate`);
   } else {
-    // Baris 69 digunakan untuk: Membuka browser dan menavigasi ke halaman "${BASE_URL}/test/login/${role}"
+    // Kegunaan: Membuka browser dan menavigasi ke halaman "${BASE_URL}/test/login/${role}"
     await page.goto(`${BASE_URL}/test/login/${role}`);
   }
   await page.waitForLoadState('networkidle');
 }
 
-// Baris 75 digunakan untuk: Mengelompokkan skenario pengujian tentang "User Manual Screenshots"
+// Kegunaan: Mengelompokkan skenario pengujian tentang "User Manual Screenshots"
 test.describe('User Manual Screenshots', () => {
   test.beforeAll(async () => {
     // Ensure screenshot directories exist
@@ -82,7 +82,7 @@ test.describe('User Manual Screenshots', () => {
   });
 
   for (const pageDef of pages) {
-    // Baris 86 digunakan untuk: Memulai eksekusi pengujian dengan judul "capture: ${pageDef.section}/${pageDef.id}"
+    // Kegunaan: Memulai eksekusi pengujian dengan judul "capture: ${pageDef.section}/${pageDef.id}"
     test(`capture: ${pageDef.section}/${pageDef.id}`, async ({ page }) => {
       page.setViewportSize({ width: 1280, height: 800 });
 
@@ -90,7 +90,7 @@ test.describe('User Manual Screenshots', () => {
         await loginAs(page, pageDef.requiresAuth);
       }
 
-      // Baris 94 digunakan untuk: Membuka browser dan menavigasi ke halaman "${BASE_URL}${pageDef.url}"
+      // Kegunaan: Membuka browser dan menavigasi ke halaman "${BASE_URL}${pageDef.url}"
       await page.goto(`${BASE_URL}${pageDef.url}`);
       await page.waitForLoadState('networkidle');
 
@@ -102,12 +102,12 @@ test.describe('User Manual Screenshots', () => {
   }
 
   // Candidate detail: navigate from list to get a real candidate ID
-  // Baris 106 digunakan untuk: Memulai eksekusi pengujian dengan judul "capture: admin/candidate-detail"
+  // Kegunaan: Memulai eksekusi pengujian dengan judul "capture: admin/candidate-detail"
   test('capture: admin/candidate-detail', async ({ page }) => {
     page.setViewportSize({ width: 1280, height: 800 });
     await loginAs(page, 'admin');
 
-    // Baris 111 digunakan untuk: Membuka browser dan menavigasi ke halaman "${BASE_URL}/admin/candidates"
+    // Kegunaan: Membuka browser dan menavigasi ke halaman "${BASE_URL}/admin/candidates"
     await page.goto(`${BASE_URL}/admin/candidates`);
     await page.waitForLoadState('networkidle');
 

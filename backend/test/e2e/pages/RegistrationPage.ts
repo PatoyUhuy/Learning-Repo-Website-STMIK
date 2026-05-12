@@ -2,6 +2,8 @@ import { Page, Locator, expect } from '@playwright/test';
 import { BasePage } from './BasePage';
 
 export class RegistrationPage extends BasePage {
+  readonly path = '/register';
+
   // Registration form
   readonly registrationForm: Locator;
   readonly errorMessage: Locator;
@@ -61,7 +63,7 @@ export class RegistrationPage extends BasePage {
   }
 
   async goto() {
-    await this.page.goto('/register');
+    await super.goto();
   }
 
   async gotoWithRef(refCode: string) {
@@ -148,6 +150,8 @@ export class RegistrationPage extends BasePage {
 }
 
 export class LoginPage extends BasePage {
+  readonly path = '/login';
+
   readonly loginForm: Locator;
   readonly inputIdentifier: Locator;
   readonly inputPassword: Locator;
@@ -164,13 +168,14 @@ export class LoginPage extends BasePage {
   }
 
   async goto() {
-    await this.page.goto('/login');
+    await super.goto();
   }
 
   async expectPageLoaded() {
     await expect(this.loginForm).toBeVisible();
   }
 
+  // @ts-ignore - login signature differs from BasePage (takes credentials, not role)
   async login(identifier: string, password: string) {
     await this.inputIdentifier.fill(identifier);
     await this.inputPassword.fill(password);

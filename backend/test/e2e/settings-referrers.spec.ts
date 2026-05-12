@@ -1,72 +1,72 @@
 import { test, expect } from '@playwright/test';
 import { SettingsReferrersPage } from './pages';
 
-// Baris 5 digunakan untuk: Mengelompokkan skenario pengujian tentang "Settings - Referrer Management"
+// Kegunaan: Mengelompokkan skenario pengujian tentang "Settings - Referrer Management"
 test.describe('Settings - Referrer Management', () => {
   let referrersPage: SettingsReferrersPage;
 
-  // Baris 9 digunakan untuk: Menjalankan fungsi persiapan (setup) SEBELUM setiap test dijalankan
+  // Kegunaan: Menjalankan fungsi persiapan (setup) SEBELUM setiap test dijalankan
   test.beforeEach(async ({ page }) => {
-    // Baris 11 digunakan untuk: Menyiapkan file helper halaman (Page Object) untuk mempermudah interaksi
+    // Kegunaan: Menyiapkan file helper halaman (Page Object) untuk mempermudah interaksi
     referrersPage = new SettingsReferrersPage(page);
     await referrersPage.login('admin');
     await referrersPage.goto();
     await referrersPage.expectPageLoaded();
   });
 
-  // Baris 18 digunakan untuk: Mengelompokkan skenario pengujian tentang "Page Load"
+  // Kegunaan: Mengelompokkan skenario pengujian tentang "Page Load"
   test.describe('Page Load', () => {
-    // Baris 20 digunakan untuk: Memulai eksekusi pengujian dengan judul "should display referrers page"
+    // Kegunaan: Memulai eksekusi pengujian dengan judul "should display referrers page"
     test('should display referrers page', async () => {
-      // Baris 22 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+      // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(referrersPage.pageContainer).toBeVisible();
-      // Baris 24 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+      // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(referrersPage.referrersSection).toBeVisible();
     });
 
-    // Baris 28 digunakan untuk: Memulai eksekusi pengujian dengan judul "should display referrer stats"
+    // Kegunaan: Memulai eksekusi pengujian dengan judul "should display referrer stats"
     test('should display referrer stats', async () => {
-      // Baris 30 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+      // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(referrersPage.referrerStats).toBeVisible();
-      // Baris 32 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+      // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(referrersPage.statTotal).toBeVisible();
-      // Baris 34 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+      // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(referrersPage.statAlumni).toBeVisible();
-      // Baris 36 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+      // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(referrersPage.statTeacher).toBeVisible();
-      // Baris 38 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+      // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(referrersPage.statStudent).toBeVisible();
-      // Baris 40 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+      // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(referrersPage.statPartner).toBeVisible();
-      // Baris 42 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+      // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(referrersPage.statStaff).toBeVisible();
     });
 
-    // Baris 46 digunakan untuk: Memulai eksekusi pengujian dengan judul "should display add referrer button"
+    // Kegunaan: Memulai eksekusi pengujian dengan judul "should display add referrer button"
     test('should display add referrer button', async () => {
-      // Baris 48 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+      // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(referrersPage.addReferrerButton).toBeVisible();
     });
   });
 
-  // Baris 53 digunakan untuk: Mengelompokkan skenario pengujian tentang "Referrer CRUD"
+  // Kegunaan: Mengelompokkan skenario pengujian tentang "Referrer CRUD"
   test.describe('Referrer CRUD', () => {
     test.describe.configure({ mode: 'serial' });
 
-    // Baris 57 digunakan untuk: Memulai eksekusi pengujian dengan judul "should open add referrer modal"
+    // Kegunaan: Memulai eksekusi pengujian dengan judul "should open add referrer modal"
     test('should open add referrer modal', async () => {
       await referrersPage.openAddReferrerModal();
-      // Baris 60 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+      // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(referrersPage.addReferrerModal).toBeVisible();
-      // Baris 62 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+      // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(referrersPage.inputReferrerName).toBeVisible();
-      // Baris 64 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+      // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(referrersPage.inputReferrerType).toBeVisible();
-      // Baris 66 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+      // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(referrersPage.inputReferrerInstitution).toBeVisible();
     });
 
-    // Baris 70 digunakan untuk: Memulai eksekusi pengujian dengan judul "should add new alumni referrer via HTMX"
+    // Kegunaan: Memulai eksekusi pengujian dengan judul "should add new alumni referrer via HTMX"
     test('should add new alumni referrer via HTMX', async ({ page }) => {
       const referrerIdsBefore = await referrersPage.getAllReferrerIds();
       const countBefore = referrerIdsBefore.length;
@@ -99,7 +99,7 @@ test.describe('Settings - Referrer Management', () => {
       }
     });
 
-    // Baris 103 digunakan untuk: Memulai eksekusi pengujian dengan judul "should add new teacher referrer via HTMX"
+    // Kegunaan: Memulai eksekusi pengujian dengan judul "should add new teacher referrer via HTMX"
     test('should add new teacher referrer via HTMX', async ({ page }) => {
       const referrerIdsBefore = await referrersPage.getAllReferrerIds();
       const countBefore = referrerIdsBefore.length;
@@ -131,7 +131,7 @@ test.describe('Settings - Referrer Management', () => {
       }
     });
 
-    // Baris 135 digunakan untuk: Memulai eksekusi pengujian dengan judul "should add new partner referrer via HTMX"
+    // Kegunaan: Memulai eksekusi pengujian dengan judul "should add new partner referrer via HTMX"
     test('should add new partner referrer via HTMX', async ({ page }) => {
       const referrerIdsBefore = await referrersPage.getAllReferrerIds();
       const countBefore = referrerIdsBefore.length;
@@ -159,7 +159,7 @@ test.describe('Settings - Referrer Management', () => {
       }
     });
 
-    // Baris 163 digunakan untuk: Memulai eksekusi pengujian dengan judul "should toggle referrer status via HTMX"
+    // Kegunaan: Memulai eksekusi pengujian dengan judul "should toggle referrer status via HTMX"
     test('should toggle referrer status via HTMX', async () => {
       const referrerIds = await referrersPage.getAllReferrerIds();
       if (referrerIds.length === 0) {
@@ -184,7 +184,7 @@ test.describe('Settings - Referrer Management', () => {
       await referrersPage.toggleReferrerStatus(referrerId);
     });
 
-    // Baris 188 digunakan untuk: Memulai eksekusi pengujian dengan judul "should edit referrer name via HTMX"
+    // Kegunaan: Memulai eksekusi pengujian dengan judul "should edit referrer name via HTMX"
     test('should edit referrer name via HTMX', async ({ page }) => {
       const referrerIds = await referrersPage.getAllReferrerIds();
       if (referrerIds.length === 0) {
@@ -204,7 +204,7 @@ test.describe('Settings - Referrer Management', () => {
       await referrersPage.expectReferrerNameContains(referrerId, newName);
     });
 
-    // Baris 208 digunakan untuk: Memulai eksekusi pengujian dengan judul "should edit referrer institution via HTMX"
+    // Kegunaan: Memulai eksekusi pengujian dengan judul "should edit referrer institution via HTMX"
     test('should edit referrer institution via HTMX', async ({ page }) => {
       const referrerIds = await referrersPage.getAllReferrerIds();
       if (referrerIds.length === 0) {
@@ -224,7 +224,7 @@ test.describe('Settings - Referrer Management', () => {
       await referrersPage.expectReferrerInstitutionContains(referrerId, newInstitution);
     });
 
-    // Baris 228 digunakan untuk: Memulai eksekusi pengujian dengan judul "should display edit button for each referrer"
+    // Kegunaan: Memulai eksekusi pengujian dengan judul "should display edit button for each referrer"
     test('should display edit button for each referrer', async () => {
       const referrerIds = await referrersPage.getAllReferrerIds();
       if (referrerIds.length === 0) {
@@ -233,15 +233,15 @@ test.describe('Settings - Referrer Management', () => {
       }
 
       for (const referrerId of referrerIds) {
-        // Baris 237 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+        // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
         await expect(referrersPage.getReferrerEditButton(referrerId)).toBeVisible();
       }
     });
   });
 
-  // Baris 243 digunakan untuk: Mengelompokkan skenario pengujian tentang "Stats Verification"
+  // Kegunaan: Mengelompokkan skenario pengujian tentang "Stats Verification"
   test.describe('Stats Verification', () => {
-    // Baris 245 digunakan untuk: Memulai eksekusi pengujian dengan judul "should update stats when adding referrer"
+    // Kegunaan: Memulai eksekusi pengujian dengan judul "should update stats when adding referrer"
     test('should update stats when adding referrer', async ({ page }) => {
       // Get initial stats
       const initialTotal = await referrersPage.statTotal.textContent();

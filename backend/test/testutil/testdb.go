@@ -9,7 +9,7 @@
  * ============================================================================
  */
 
-// Baris 13 sampai 27 digunakan untuk: Deklarasi package dan import library yang dibutuhkan
+// Kegunaan: Deklarasi package dan import library yang dibutuhkan
 package testutil
 
 import (
@@ -26,7 +26,7 @@ import (
 	"github.com/testcontainers/testcontainers-go/wait"
 )
 
-// Baris 31 sampai 35 digunakan untuk: Struktur data (struct) TestDB
+// Kegunaan: Struktur data (struct) TestDB
 // Berisi objek container (server database docker) dan ConnectionStr (URL koneksi database)
 type TestDB struct {
 	Container     *postgres.PostgresContainer
@@ -42,7 +42,7 @@ func SetupTestDB(t *testing.T) *TestDB {
 	t.Helper() // Menandai ini sebagai fungsi helper (pesan error akan menunjuk ke pemanggilnya)
 	ctx := context.Background() // Membuat konteks dasar
 
-	// Baris 50 sampai 60 digunakan untuk: Membuat container Docker berisi database PostgreSQL versi 18
+	// Kegunaan: Membuat container Docker berisi database PostgreSQL versi 18
 	// - Nama database: test_db
 	// - Username: test
 	// - Password: test
@@ -59,7 +59,7 @@ func SetupTestDB(t *testing.T) *TestDB {
 		t.Fatalf("failed to start postgres container: %v", err) // Gagalkan test jika error
 	}
 
-	// Baris 63 sampai 67 digunakan untuk: Mendapatkan URL string koneksi dari container yang baru dibuat
+	// Kegunaan: Mendapatkan URL string koneksi dari container yang baru dibuat
 	connStr, err := container.ConnectionString(ctx, "sslmode=disable")
 	if err != nil {
 		container.Terminate(ctx) // Matikan container jika gagal
@@ -72,23 +72,23 @@ func SetupTestDB(t *testing.T) *TestDB {
 	// di database sementara tersebut.
 	// ============================================================================
 
-	// Baris 76 digunakan untuk: Ambil lokasi folder migrasi
+	// Kegunaan: Ambil lokasi folder migrasi
 	migrationsPath := getMigrationsPath()
 
-	// Baris 79 sampai 83 digunakan untuk: Buat objek migrasi yang menghubungkan file migrasi dengan database
+	// Kegunaan: Buat objek migrasi yang menghubungkan file migrasi dengan database
 	m, err := migrate.New("file://"+migrationsPath, connStr)
 	if err != nil {
 		container.Terminate(ctx)
 		t.Fatalf("failed to create migrate instance: %v", err)
 	}
 
-	// Baris 86 sampai 89 digunakan untuk: Jalankan migrasi (m.Up()). Jika error selain "tidak ada perubahan", test digagalkan.
+	// Kegunaan: Jalankan migrasi (m.Up()). Jika error selain "tidak ada perubahan", test digagalkan.
 	if err := m.Up(); err != nil && err != migrate.ErrNoChange {
 		container.Terminate(ctx)
 		t.Fatalf("failed to run migrations: %v", err)
 	}
 
-	// Baris 92 sampai 95 digunakan untuk: Kembalikan objek database yang siap digunakan
+	// Kegunaan: Kembalikan objek database yang siap digunakan
 	return &TestDB{
 		Container:     container,
 		ConnectionStr: connStr,

@@ -1,13 +1,13 @@
 import { test, expect } from '@playwright/test';
 import { AnnouncementsPage } from './pages';
 
-// Baris 5 digunakan untuk: Mengelompokkan skenario pengujian tentang "Admin Announcements Management"
+// Kegunaan: Mengelompokkan skenario pengujian tentang "Admin Announcements Management"
 test.describe('Admin Announcements Management', () => {
   let announcementsPage: AnnouncementsPage;
 
-  // Baris 9 digunakan untuk: Menjalankan fungsi persiapan (setup) SEBELUM setiap test dijalankan
+  // Kegunaan: Menjalankan fungsi persiapan (setup) SEBELUM setiap test dijalankan
   test.beforeEach(async ({ page }) => {
-    // Baris 11 digunakan untuk: Menyiapkan file helper halaman (Page Object) untuk mempermudah interaksi
+    // Kegunaan: Menyiapkan file helper halaman (Page Object) untuk mempermudah interaksi
     announcementsPage = new AnnouncementsPage(page);
     // Login as admin before each test
     await announcementsPage.login('admin');
@@ -15,42 +15,42 @@ test.describe('Admin Announcements Management', () => {
     await announcementsPage.expectPageLoaded();
   });
 
-  // Baris 19 digunakan untuk: Mengelompokkan skenario pengujian tentang "Page Load"
+  // Kegunaan: Mengelompokkan skenario pengujian tentang "Page Load"
   test.describe('Page Load', () => {
-    // Baris 21 digunakan untuk: Memulai eksekusi pengujian dengan judul "should display announcements page with section"
+    // Kegunaan: Memulai eksekusi pengujian dengan judul "should display announcements page with section"
     test('should display announcements page with section', async () => {
-      // Baris 23 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+      // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(announcementsPage.announcementsSection).toBeVisible();
     });
 
-    // Baris 27 digunakan untuk: Memulai eksekusi pengujian dengan judul "should display add announcement button"
+    // Kegunaan: Memulai eksekusi pengujian dengan judul "should display add announcement button"
     test('should display add announcement button', async () => {
-      // Baris 29 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+      // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(announcementsPage.addAnnouncementButton).toBeVisible();
     });
   });
 
-  // Baris 34 digunakan untuk: Mengelompokkan skenario pengujian tentang "Announcement CRUD"
+  // Kegunaan: Mengelompokkan skenario pengujian tentang "Announcement CRUD"
   test.describe('Announcement CRUD', () => {
     // Run CRUD tests serially to avoid race conditions
     test.describe.configure({ mode: 'serial' });
 
-    // Baris 39 digunakan untuk: Memulai eksekusi pengujian dengan judul "should open add announcement modal"
+    // Kegunaan: Memulai eksekusi pengujian dengan judul "should open add announcement modal"
     test('should open add announcement modal', async () => {
       await announcementsPage.openAddAnnouncementModal();
-      // Baris 42 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+      // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(announcementsPage.addAnnouncementModal).toBeVisible();
-      // Baris 44 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+      // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(announcementsPage.inputTitle).toBeVisible();
-      // Baris 46 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+      // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(announcementsPage.inputContent).toBeVisible();
-      // Baris 48 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+      // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(announcementsPage.selectTargetStatus).toBeVisible();
-      // Baris 50 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+      // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(announcementsPage.selectTargetProdi).toBeVisible();
     });
 
-    // Baris 54 digunakan untuk: Memulai eksekusi pengujian dengan judul "should add new announcement via HTMX"
+    // Kegunaan: Memulai eksekusi pengujian dengan judul "should add new announcement via HTMX"
     test('should add new announcement via HTMX', async ({ page }) => {
       // Generate unique title
       const timestamp = Date.now().toString().slice(-6);
@@ -84,7 +84,7 @@ test.describe('Admin Announcements Management', () => {
       }
     });
 
-    // Baris 88 digunakan untuk: Memulai eksekusi pengujian dengan judul "should publish and unpublish announcement via HTMX"
+    // Kegunaan: Memulai eksekusi pengujian dengan judul "should publish and unpublish announcement via HTMX"
     test('should publish and unpublish announcement via HTMX', async () => {
       // First create a new announcement to test with
       const timestamp = Date.now().toString().slice(-6);
@@ -112,7 +112,7 @@ test.describe('Admin Announcements Management', () => {
       }
     });
 
-    // Baris 116 digunakan untuk: Memulai eksekusi pengujian dengan judul "should edit announcement via HTMX"
+    // Kegunaan: Memulai eksekusi pengujian dengan judul "should edit announcement via HTMX"
     test('should edit announcement via HTMX', async ({ page }) => {
       // First create a new announcement to test with
       const timestamp = Date.now().toString().slice(-6);
@@ -142,7 +142,7 @@ test.describe('Admin Announcements Management', () => {
       }
     });
 
-    // Baris 146 digunakan untuk: Memulai eksekusi pengujian dengan judul "should delete announcement via HTMX"
+    // Kegunaan: Memulai eksekusi pengujian dengan judul "should delete announcement via HTMX"
     test('should delete announcement via HTMX', async () => {
       // First create a new announcement to test with
       const timestamp = Date.now().toString().slice(-6);
@@ -161,15 +161,15 @@ test.describe('Admin Announcements Management', () => {
         await announcementsPage.deleteAnnouncement(newAnnouncementId);
 
         // Verify announcement is removed
-        // Baris 165 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+        // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
         await expect(announcementsPage.getAnnouncementRow(newAnnouncementId)).not.toBeVisible();
       }
     });
   });
 
-  // Baris 171 digunakan untuk: Mengelompokkan skenario pengujian tentang "Announcement Targeting"
+  // Kegunaan: Mengelompokkan skenario pengujian tentang "Announcement Targeting"
   test.describe('Announcement Targeting', () => {
-    // Baris 173 digunakan untuk: Memulai eksekusi pengujian dengan judul "should add announcement with target status"
+    // Kegunaan: Memulai eksekusi pengujian dengan judul "should add announcement with target status"
     test('should add announcement with target status', async () => {
       const timestamp = Date.now().toString().slice(-6);
       const newTitle = `Targeted Status ${timestamp}`;
@@ -184,22 +184,22 @@ test.describe('Admin Announcements Management', () => {
   });
 });
 
-// Baris 188 digunakan untuk: Mengelompokkan skenario pengujian tentang "Admin Navigation to Announcements"
+// Kegunaan: Mengelompokkan skenario pengujian tentang "Admin Navigation to Announcements"
 test.describe('Admin Navigation to Announcements', () => {
-  // Baris 190 digunakan untuk: Memulai eksekusi pengujian dengan judul "should navigate to announcements from sidebar"
+  // Kegunaan: Memulai eksekusi pengujian dengan judul "should navigate to announcements from sidebar"
   test('should navigate to announcements from sidebar', async ({ page }) => {
     // Login as admin
-    // Baris 193 digunakan untuk: Membuka browser dan menavigasi ke halaman "/test/login/admin"
+    // Kegunaan: Membuka browser dan menavigasi ke halaman "/test/login/admin"
     await page.goto('/test/login/admin');
     await page.waitForURL(/\/admin\/?$/);
 
     // Click announcements link in sidebar
-    // Baris 198 digunakan untuk: Mencari elemen di layar lalu mengkliknya (simulasi klik mouse)
+    // Kegunaan: Mencari elemen di layar lalu mengkliknya (simulasi klik mouse)
     await page.getByTestId('nav-announcements').click();
     await page.waitForURL(/\/admin\/announcements/);
 
     // Verify page loaded
-    // Baris 203 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(page.getByTestId('settings-announcements-page')).toBeVisible();
   });
 });

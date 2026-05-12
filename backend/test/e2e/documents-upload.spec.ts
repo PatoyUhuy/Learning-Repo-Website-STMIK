@@ -30,7 +30,7 @@ async function registerCandidate(browser: Browser): Promise<{ email: string; nam
   await candidatePage.getByTestId('input-password').fill(password);
   await candidatePage.getByTestId('input-password-confirm').fill(password);
   await candidatePage.getByTestId('btn-submit-step1').click();
-  // Baris 34 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
+  // Kegunaan: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
   await expect(candidatePage.getByTestId('step2-form')).toBeVisible({ timeout: 10000 });
 
   // Step 2: Personal info - use unique name
@@ -39,7 +39,7 @@ async function registerCandidate(browser: Browser): Promise<{ email: string; nam
   await candidatePage.getByTestId('input-city').fill('Jakarta');
   await candidatePage.getByTestId('input-province').fill('DKI Jakarta');
   await candidatePage.getByTestId('btn-submit-step2').click();
-  // Baris 43 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
+  // Kegunaan: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
   await expect(candidatePage.getByTestId('step3-form')).toBeVisible({ timeout: 10000 });
 
   // Step 3: Education
@@ -49,39 +49,39 @@ async function registerCandidate(browser: Browser): Promise<{ email: string; nam
   const prodiRadios = candidatePage.locator('input[type="radio"][name="prodi_id"]');
   await prodiRadios.first().click();
   await candidatePage.getByTestId('btn-submit-step3').click();
-  // Baris 53 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
+  // Kegunaan: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
   await expect(candidatePage.getByTestId('step4-form')).toBeVisible({ timeout: 10000 });
 
   // Step 4: Source tracking
   await candidatePage.getByTestId('select-source-type').selectOption('instagram');
   await candidatePage.getByTestId('btn-submit-step4').click();
-  // Baris 59 digunakan untuk: Memastikan URL browser sudah berubah/sesuai dengan yang diharapkan
+  // Kegunaan: Memastikan URL browser sudah berubah/sesuai dengan yang diharapkan
   await expect(candidatePage).toHaveURL('/portal', { timeout: 10000 });
 
   return { email: uniqueEmail, name: uniqueName, page: candidatePage };
 }
 
-// Baris 65 digunakan untuk: Mengelompokkan skenario pengujian tentang "Document Upload - Page Display"
+// Kegunaan: Mengelompokkan skenario pengujian tentang "Document Upload - Page Display"
 test.describe('Document Upload - Page Display', () => {
-  // Baris 67 digunakan untuk: Menjalankan fungsi persiapan (setup) SEBELUM setiap test dijalankan
+  // Kegunaan: Menjalankan fungsi persiapan (setup) SEBELUM setiap test dijalankan
   test.beforeEach(async ({ page }) => {
-    // Baris 69 digunakan untuk: Membuka browser dan menavigasi ke halaman "/test/login/candidate"
+    // Kegunaan: Membuka browser dan menavigasi ke halaman "/test/login/candidate"
     await page.goto('/test/login/candidate');
-    // Baris 71 digunakan untuk: Memastikan URL browser sudah berubah/sesuai dengan yang diharapkan
+    // Kegunaan: Memastikan URL browser sudah berubah/sesuai dengan yang diharapkan
     await expect(page).toHaveURL('/portal');
   });
 
-  // Baris 75 digunakan untuk: Memulai eksekusi pengujian dengan judul "should display documents page with required documents"
+  // Kegunaan: Memulai eksekusi pengujian dengan judul "should display documents page with required documents"
   test('should display documents page with required documents', async ({ page }) => {
-    // Baris 77 digunakan untuk: Menyiapkan file helper halaman (Page Object) untuk mempermudah interaksi
+    // Kegunaan: Menyiapkan file helper halaman (Page Object) untuk mempermudah interaksi
     const documentsPage = new DocumentsPage(page);
 
-    // Baris 80 digunakan untuk: Membuka browser dan menavigasi ke halaman "/portal/documents"
+    // Kegunaan: Membuka browser dan menavigasi ke halaman "/portal/documents"
     await page.goto('/portal/documents');
     await documentsPage.expectPageLoaded();
 
     // Verify progress text is shown
-    // Baris 85 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
+    // Kegunaan: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
     await expect(documentsPage.progressText).toBeVisible({ timeout: 10000 });
     const progressText = await documentsPage.getProgressText();
     expect(progressText).toMatch(/\d+ dari \d+ dokumen/);
@@ -91,11 +91,11 @@ test.describe('Document Upload - Page Display', () => {
     expect(docCount).toBeGreaterThanOrEqual(4);
   });
 
-  // Baris 95 digunakan untuk: Memulai eksekusi pengujian dengan judul "should show upload forms for documents"
+  // Kegunaan: Memulai eksekusi pengujian dengan judul "should show upload forms for documents"
   test('should show upload forms for documents', async ({ page }) => {
-    // Baris 97 digunakan untuk: Membuka browser dan menavigasi ke halaman "/portal/documents"
+    // Kegunaan: Membuka browser dan menavigasi ke halaman "/portal/documents"
     await page.goto('/portal/documents');
-    // Baris 99 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(page.getByTestId('documents-page')).toBeVisible();
 
     // Verify upload forms exist
@@ -111,16 +111,16 @@ test.describe('Document Upload - Page Display', () => {
   });
 });
 
-// Baris 115 digunakan untuk: Mengelompokkan skenario pengujian tentang "Document Upload - Upload Flow"
+// Kegunaan: Mengelompokkan skenario pengujian tentang "Document Upload - Upload Flow"
 test.describe('Document Upload - Upload Flow', () => {
-  // Baris 117 digunakan untuk: Memulai eksekusi pengujian dengan judul "should upload document and verify storage"
+  // Kegunaan: Memulai eksekusi pengujian dengan judul "should upload document and verify storage"
   test('should upload document and verify storage', async ({ browser }) => {
     // Register a fresh candidate so we have clean upload slots
     const { email, page: candidatePage } = await registerCandidate(browser);
 
     // Navigate to documents page
     await candidatePage.goto('/portal/documents');
-    // Baris 124 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(candidatePage.getByTestId('documents-page')).toBeVisible();
 
     // Find upload forms
@@ -140,7 +140,7 @@ test.describe('Document Upload - Upload Flow', () => {
     await candidatePage.waitForLoadState('networkidle');
 
     // Verify upload succeeded - should show "Menunggu Review" status
-    // Baris 144 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
+    // Kegunaan: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
     await expect(candidatePage.locator('text=Menunggu Review').first()).toBeVisible({ timeout: 10000 });
 
     // Verify file details are shown
@@ -152,14 +152,14 @@ test.describe('Document Upload - Upload Flow', () => {
     await candidatePage.close();
   });
 
-  // Baris 156 digunakan untuk: Memulai eksekusi pengujian dengan judul "should verify uploaded file is stored and accessible"
+  // Kegunaan: Memulai eksekusi pengujian dengan judul "should verify uploaded file is stored and accessible"
   test('should verify uploaded file is stored and accessible', async ({ browser }) => {
     // Register a fresh candidate
     const { email, name, page: candidatePage } = await registerCandidate(browser);
 
     // Upload a document
     await candidatePage.goto('/portal/documents');
-    // Baris 163 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(candidatePage.getByTestId('documents-page')).toBeVisible();
 
     const uploadForms = candidatePage.locator('form[action="/portal/documents/upload"]');
@@ -171,7 +171,7 @@ test.describe('Document Upload - Upload Flow', () => {
     await candidatePage.waitForLoadState('networkidle');
 
     // Verify pending status
-    // Baris 175 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(candidatePage.locator('text=Menunggu Review').first()).toBeVisible();
 
     await candidatePage.close();
@@ -188,7 +188,7 @@ test.describe('Document Upload - Upload Flow', () => {
     await adminPage.waitForLoadState('networkidle');
 
     // Verify document appears - check candidate name in the results
-    // Baris 192 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(adminPage.locator(`text=${name}`).first()).toBeVisible();
 
     // Check if there's a link to view the file
@@ -207,14 +207,14 @@ test.describe('Document Upload - Upload Flow', () => {
     await adminPage.close();
   });
 
-  // Baris 211 digunakan untuk: Memulai eksekusi pengujian dengan judul "should upload document and persist across page reload"
+  // Kegunaan: Memulai eksekusi pengujian dengan judul "should upload document and persist across page reload"
   test('should upload document and persist across page reload', async ({ browser }) => {
     // Register a fresh candidate
     const { email, page: candidatePage } = await registerCandidate(browser);
 
     // Upload a document
     await candidatePage.goto('/portal/documents');
-    // Baris 218 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(candidatePage.getByTestId('documents-page')).toBeVisible();
 
     const uploadForms = candidatePage.locator('form[action="/portal/documents/upload"]');
@@ -226,7 +226,7 @@ test.describe('Document Upload - Upload Flow', () => {
     await candidatePage.waitForLoadState('networkidle');
 
     // Verify pending status
-    // Baris 230 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(candidatePage.locator('text=Menunggu Review').first()).toBeVisible();
 
     // Close page and re-login
@@ -238,28 +238,28 @@ test.describe('Document Upload - Upload Flow', () => {
     await verifyPage.getByTestId('input-identifier').fill(email);
     await verifyPage.getByTestId('input-password').fill('testpassword123');
     await verifyPage.getByTestId('btn-login').click();
-    // Baris 242 digunakan untuk: Memastikan URL browser sudah berubah/sesuai dengan yang diharapkan
+    // Kegunaan: Memastikan URL browser sudah berubah/sesuai dengan yang diharapkan
     await expect(verifyPage).toHaveURL('/portal', { timeout: 10000 });
 
     await verifyPage.goto('/portal/documents');
-    // Baris 246 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(verifyPage.getByTestId('documents-page')).toBeVisible();
 
     // Document should still show pending status
-    // Baris 250 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(verifyPage.locator('text=Menunggu Review').first()).toBeVisible();
 
     await verifyPage.close();
   });
 
-  // Baris 256 digunakan untuk: Memulai eksekusi pengujian dengan judul "should replace document on re-upload"
+  // Kegunaan: Memulai eksekusi pengujian dengan judul "should replace document on re-upload"
   test('should replace document on re-upload', async ({ browser }) => {
     // Register a fresh candidate
     const { page: candidatePage } = await registerCandidate(browser);
 
     // Upload first document
     await candidatePage.goto('/portal/documents');
-    // Baris 263 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(candidatePage.getByTestId('documents-page')).toBeVisible();
 
     const uploadForms = candidatePage.locator('form[action="/portal/documents/upload"]');
@@ -271,7 +271,7 @@ test.describe('Document Upload - Upload Flow', () => {
     await candidatePage.waitForLoadState('networkidle');
 
     // First upload done
-    // Baris 275 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(candidatePage.locator('text=Menunggu Review').first()).toBeVisible();
 
     // Create a different test file
@@ -293,7 +293,7 @@ test.describe('Document Upload - Upload Flow', () => {
       await candidatePage.waitForLoadState('networkidle');
 
       // Should still show pending (reset to pending on re-upload)
-      // Baris 297 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+      // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
       await expect(candidatePage.locator('text=Menunggu Review').first()).toBeVisible();
     }
 
@@ -301,21 +301,21 @@ test.describe('Document Upload - Upload Flow', () => {
   });
 });
 
-// Baris 305 digunakan untuk: Mengelompokkan skenario pengujian tentang "Document Upload - Validation"
+// Kegunaan: Mengelompokkan skenario pengujian tentang "Document Upload - Validation"
 test.describe('Document Upload - Validation', () => {
-  // Baris 307 digunakan untuk: Menjalankan fungsi persiapan (setup) SEBELUM setiap test dijalankan
+  // Kegunaan: Menjalankan fungsi persiapan (setup) SEBELUM setiap test dijalankan
   test.beforeEach(async ({ page }) => {
-    // Baris 309 digunakan untuk: Membuka browser dan menavigasi ke halaman "/test/login/candidate"
+    // Kegunaan: Membuka browser dan menavigasi ke halaman "/test/login/candidate"
     await page.goto('/test/login/candidate');
-    // Baris 311 digunakan untuk: Memastikan URL browser sudah berubah/sesuai dengan yang diharapkan
+    // Kegunaan: Memastikan URL browser sudah berubah/sesuai dengan yang diharapkan
     await expect(page).toHaveURL('/portal');
   });
 
-  // Baris 315 digunakan untuk: Memulai eksekusi pengujian dengan judul "should have file size limit displayed"
+  // Kegunaan: Memulai eksekusi pengujian dengan judul "should have file size limit displayed"
   test('should have file size limit displayed', async ({ page }) => {
-    // Baris 317 digunakan untuk: Membuka browser dan menavigasi ke halaman "/portal/documents"
+    // Kegunaan: Membuka browser dan menavigasi ke halaman "/portal/documents"
     await page.goto('/portal/documents');
-    // Baris 319 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(page.getByTestId('documents-page')).toBeVisible();
 
     // Should mention file size limit somewhere on page
@@ -327,11 +327,11 @@ test.describe('Document Upload - Validation', () => {
     expect(hasFileSizeInfo).toBe(true);
   });
 
-  // Baris 331 digunakan untuk: Memulai eksekusi pengujian dengan judul "should show accepted file formats"
+  // Kegunaan: Memulai eksekusi pengujian dengan judul "should show accepted file formats"
   test('should show accepted file formats', async ({ page }) => {
-    // Baris 333 digunakan untuk: Membuka browser dan menavigasi ke halaman "/portal/documents"
+    // Kegunaan: Membuka browser dan menavigasi ke halaman "/portal/documents"
     await page.goto('/portal/documents');
-    // Baris 335 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(page.getByTestId('documents-page')).toBeVisible();
 
     // Should mention accepted formats

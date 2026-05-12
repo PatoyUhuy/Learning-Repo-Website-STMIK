@@ -29,7 +29,7 @@ async function registerCandidate(browser: Browser): Promise<{ email: string; nam
   await candidatePage.getByTestId('input-password').fill(password);
   await candidatePage.getByTestId('input-password-confirm').fill(password);
   await candidatePage.getByTestId('btn-submit-step1').click();
-  // Baris 33 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
+  // Kegunaan: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
   await expect(candidatePage.getByTestId('step2-form')).toBeVisible({ timeout: 10000 });
 
   // Step 2: Personal info - use unique name
@@ -38,7 +38,7 @@ async function registerCandidate(browser: Browser): Promise<{ email: string; nam
   await candidatePage.getByTestId('input-city').fill('Jakarta');
   await candidatePage.getByTestId('input-province').fill('DKI Jakarta');
   await candidatePage.getByTestId('btn-submit-step2').click();
-  // Baris 42 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
+  // Kegunaan: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
   await expect(candidatePage.getByTestId('step3-form')).toBeVisible({ timeout: 10000 });
 
   // Step 3: Education
@@ -48,13 +48,13 @@ async function registerCandidate(browser: Browser): Promise<{ email: string; nam
   const prodiRadios = candidatePage.locator('input[type="radio"][name="prodi_id"]');
   await prodiRadios.first().click();
   await candidatePage.getByTestId('btn-submit-step3').click();
-  // Baris 52 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
+  // Kegunaan: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
   await expect(candidatePage.getByTestId('step4-form')).toBeVisible({ timeout: 10000 });
 
   // Step 4: Source tracking
   await candidatePage.getByTestId('select-source-type').selectOption('instagram');
   await candidatePage.getByTestId('btn-submit-step4').click();
-  // Baris 58 digunakan untuk: Memastikan URL browser sudah berubah/sesuai dengan yang diharapkan
+  // Kegunaan: Memastikan URL browser sudah berubah/sesuai dengan yang diharapkan
   await expect(candidatePage).toHaveURL('/portal', { timeout: 10000 });
 
   return { email: uniqueEmail, name: uniqueName, page: candidatePage };
@@ -62,9 +62,9 @@ async function registerCandidate(browser: Browser): Promise<{ email: string; nam
 
 // Helper to upload a document
 async function uploadDocument(page: Page): Promise<void> {
-  // Baris 66 digunakan untuk: Membuka browser dan menavigasi ke halaman "/portal/documents"
+  // Kegunaan: Membuka browser dan menavigasi ke halaman "/portal/documents"
   await page.goto('/portal/documents');
-  // Baris 68 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+  // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
   await expect(page.getByTestId('documents-page')).toBeVisible();
 
   // Find the first upload form
@@ -85,14 +85,14 @@ async function uploadDocument(page: Page): Promise<void> {
   await page.waitForLoadState('networkidle');
 
   // Verify upload succeeded - the form should now show "Menunggu Review" status
-  // Baris 89 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
+  // Kegunaan: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
   await expect(page.locator('text=Menunggu Review').first()).toBeVisible({ timeout: 10000 });
 }
 
-// Baris 93 digunakan untuk: Mengelompokkan skenario pengujian tentang "Admin Document Review - Full Flow"
+// Kegunaan: Mengelompokkan skenario pengujian tentang "Admin Document Review - Full Flow"
 test.describe('Admin Document Review - Full Flow', () => {
 
-  // Baris 96 digunakan untuk: Memulai eksekusi pengujian dengan judul "should upload document and verify it appears in admin review queue"
+  // Kegunaan: Memulai eksekusi pengujian dengan judul "should upload document and verify it appears in admin review queue"
   test('should upload document and verify it appears in admin review queue', async ({ browser }) => {
     // Step 1: Register a new candidate
     const { email, name, page: candidatePage } = await registerCandidate(browser);
@@ -104,7 +104,7 @@ test.describe('Admin Document Review - Full Flow', () => {
     // Step 3: Login as admin and verify document appears
     const adminPage = await browser.newPage();
     await adminPage.goto('/test/login/admin');
-    // Baris 108 digunakan untuk: Memastikan URL browser sudah berubah/sesuai dengan yang diharapkan
+    // Kegunaan: Memastikan URL browser sudah berubah/sesuai dengan yang diharapkan
     await expect(adminPage).toHaveURL('/admin');
 
     await adminPage.goto('/admin/documents?status=pending');
@@ -116,19 +116,19 @@ test.describe('Admin Document Review - Full Flow', () => {
     await adminPage.waitForLoadState('networkidle');
 
     // Should find the uploaded document with candidate name visible
-    // Baris 120 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(adminPage.locator(`text=${name}`).first()).toBeVisible();
 
     // Verify approve/reject buttons are available
-    // Baris 124 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(adminPage.locator('button:has-text("Setujui")').first()).toBeVisible();
-    // Baris 126 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(adminPage.locator('button:has-text("Tolak")').first()).toBeVisible();
 
     await adminPage.close();
   });
 
-  // Baris 132 digunakan untuk: Memulai eksekusi pengujian dengan judul "should approve document and verify status changes"
+  // Kegunaan: Memulai eksekusi pengujian dengan judul "should approve document and verify status changes"
   test('should approve document and verify status changes', async ({ browser }) => {
     // Step 1: Register a new candidate and upload document
     const { email, name, page: candidatePage } = await registerCandidate(browser);
@@ -146,7 +146,7 @@ test.describe('Admin Document Review - Full Flow', () => {
     await adminPage.waitForLoadState('networkidle');
 
     // Verify document is in pending queue
-    // Baris 150 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(adminPage.locator(`text=${name}`).first()).toBeVisible();
 
     // Step 3: Approve the document
@@ -169,7 +169,7 @@ test.describe('Admin Document Review - Full Flow', () => {
     await adminPage.waitForLoadState('networkidle');
 
     // Should find the document in approved list
-    // Baris 173 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(adminPage.locator(`text=${name}`).first()).toBeVisible();
 
     await adminPage.close();
@@ -180,17 +180,17 @@ test.describe('Admin Document Review - Full Flow', () => {
     await verifyPage.getByTestId('input-identifier').fill(email);
     await verifyPage.getByTestId('input-password').fill('testpassword123');
     await verifyPage.getByTestId('btn-login').click();
-    // Baris 184 digunakan untuk: Memastikan URL browser sudah berubah/sesuai dengan yang diharapkan
+    // Kegunaan: Memastikan URL browser sudah berubah/sesuai dengan yang diharapkan
     await expect(verifyPage).toHaveURL('/portal', { timeout: 10000 });
 
     await verifyPage.goto('/portal/documents');
-    // Baris 188 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(verifyPage.locator('text=Disetujui').first()).toBeVisible();
 
     await verifyPage.close();
   });
 
-  // Baris 194 digunakan untuk: Memulai eksekusi pengujian dengan judul "should reject document with reason and verify status changes"
+  // Kegunaan: Memulai eksekusi pengujian dengan judul "should reject document with reason and verify status changes"
   test('should reject document with reason and verify status changes', async ({ browser }) => {
     // Step 1: Register a new candidate and upload document
     const { email, name, page: candidatePage } = await registerCandidate(browser);
@@ -208,7 +208,7 @@ test.describe('Admin Document Review - Full Flow', () => {
     await adminPage.waitForLoadState('networkidle');
 
     // Verify document is in pending queue
-    // Baris 212 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(adminPage.locator(`text=${name}`).first()).toBeVisible();
 
     // Step 3: Click reject to open modal
@@ -217,7 +217,7 @@ test.describe('Admin Document Review - Full Flow', () => {
 
     // Modal should appear
     const modal = adminPage.locator('#reject-modal');
-    // Baris 221 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(modal).toBeVisible();
 
     // Select rejection reason
@@ -243,9 +243,9 @@ test.describe('Admin Document Review - Full Flow', () => {
     await adminPage.waitForLoadState('networkidle');
 
     // Should find the document in rejected list with reason
-    // Baris 247 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(adminPage.locator(`text=${name}`).first()).toBeVisible();
-    // Baris 249 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(adminPage.locator('text=Gambar buram').first()).toBeVisible();
 
     await adminPage.close();
@@ -256,26 +256,26 @@ test.describe('Admin Document Review - Full Flow', () => {
     await verifyPage.getByTestId('input-identifier').fill(email);
     await verifyPage.getByTestId('input-password').fill('testpassword123');
     await verifyPage.getByTestId('btn-login').click();
-    // Baris 260 digunakan untuk: Memastikan URL browser sudah berubah/sesuai dengan yang diharapkan
+    // Kegunaan: Memastikan URL browser sudah berubah/sesuai dengan yang diharapkan
     await expect(verifyPage).toHaveURL('/portal', { timeout: 10000 });
 
     await verifyPage.goto('/portal/documents');
-    // Baris 264 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(verifyPage.locator('text=Ditolak').first()).toBeVisible();
     // Rejection reason should be visible
-    // Baris 267 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(verifyPage.locator('text=buram').first()).toBeVisible();
 
     await verifyPage.close();
   });
 
-  // Baris 273 digunakan untuk: Memulai eksekusi pengujian dengan judul "should verify uploaded file is accessible via URL"
+  // Kegunaan: Memulai eksekusi pengujian dengan judul "should verify uploaded file is accessible via URL"
   test('should verify uploaded file is accessible via URL', async ({ browser }) => {
     // Step 1: Register and upload document
     const { email, name, page: candidatePage } = await registerCandidate(browser);
 
     await candidatePage.goto('/portal/documents');
-    // Baris 279 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(candidatePage.getByTestId('documents-page')).toBeVisible();
 
     // Upload document
@@ -317,100 +317,100 @@ test.describe('Admin Document Review - Full Flow', () => {
   });
 });
 
-// Baris 321 digunakan untuk: Mengelompokkan skenario pengujian tentang "Admin Document Review - Page Display"
+// Kegunaan: Mengelompokkan skenario pengujian tentang "Admin Document Review - Page Display"
 test.describe('Admin Document Review - Page Display', () => {
-  // Baris 323 digunakan untuk: Menjalankan fungsi persiapan (setup) SEBELUM setiap test dijalankan
+  // Kegunaan: Menjalankan fungsi persiapan (setup) SEBELUM setiap test dijalankan
   test.beforeEach(async ({ page }) => {
-    // Baris 325 digunakan untuk: Membuka browser dan menavigasi ke halaman "/test/login/admin"
+    // Kegunaan: Membuka browser dan menavigasi ke halaman "/test/login/admin"
     await page.goto('/test/login/admin');
-    // Baris 327 digunakan untuk: Memastikan URL browser sudah berubah/sesuai dengan yang diharapkan
+    // Kegunaan: Memastikan URL browser sudah berubah/sesuai dengan yang diharapkan
     await expect(page).toHaveURL('/admin');
   });
 
-  // Baris 331 digunakan untuk: Memulai eksekusi pengujian dengan judul "should display document review page with stats"
+  // Kegunaan: Memulai eksekusi pengujian dengan judul "should display document review page with stats"
   test('should display document review page with stats', async ({ page }) => {
-    // Baris 333 digunakan untuk: Membuka browser dan menavigasi ke halaman "/admin/documents"
+    // Kegunaan: Membuka browser dan menavigasi ke halaman "/admin/documents"
     await page.goto('/admin/documents');
 
     // Stats cards should be visible
-    // Baris 337 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(page.locator('div').filter({ hasText: /^Menunggu Review$/ })).toBeVisible();
-    // Baris 339 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(page.locator('div').filter({ hasText: /^Disetujui Hari Ini$/ })).toBeVisible();
-    // Baris 341 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(page.locator('div').filter({ hasText: /^Ditolak Hari Ini$/ })).toBeVisible();
-    // Baris 343 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(page.locator('div').filter({ hasText: /^Total Dokumen$/ })).toBeVisible();
 
     // Filter form should be visible
-    // Baris 347 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(page.locator('select[name="status"]')).toBeVisible();
-    // Baris 349 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(page.locator('select[name="type"]')).toBeVisible();
-    // Baris 351 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(page.locator('input[name="search"]')).toBeVisible();
 
     // Queue section should be visible
-    // Baris 355 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(page.locator('text=Antrian Review Dokumen')).toBeVisible();
   });
 
-  // Baris 359 digunakan untuk: Memulai eksekusi pengujian dengan judul "should filter by status via URL"
+  // Kegunaan: Memulai eksekusi pengujian dengan judul "should filter by status via URL"
   test('should filter by status via URL', async ({ page }) => {
-    // Baris 361 digunakan untuk: Membuka browser dan menavigasi ke halaman "/admin/documents?status=approved"
+    // Kegunaan: Membuka browser dan menavigasi ke halaman "/admin/documents?status=approved"
     await page.goto('/admin/documents?status=approved');
-    // Baris 363 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
+    // Kegunaan: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
     await expect(page.locator('select[name="status"]')).toHaveValue('approved');
 
-    // Baris 366 digunakan untuk: Membuka browser dan menavigasi ke halaman "/admin/documents?status=rejected"
+    // Kegunaan: Membuka browser dan menavigasi ke halaman "/admin/documents?status=rejected"
     await page.goto('/admin/documents?status=rejected');
-    // Baris 368 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
+    // Kegunaan: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
     await expect(page.locator('select[name="status"]')).toHaveValue('rejected');
 
-    // Baris 371 digunakan untuk: Membuka browser dan menavigasi ke halaman "/admin/documents?status=pending"
+    // Kegunaan: Membuka browser dan menavigasi ke halaman "/admin/documents?status=pending"
     await page.goto('/admin/documents?status=pending');
-    // Baris 373 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
+    // Kegunaan: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
     await expect(page.locator('select[name="status"]')).toHaveValue('pending');
   });
 
-  // Baris 377 digunakan untuk: Memulai eksekusi pengujian dengan judul "should filter by document type via URL"
+  // Kegunaan: Memulai eksekusi pengujian dengan judul "should filter by document type via URL"
   test('should filter by document type via URL', async ({ page }) => {
-    // Baris 379 digunakan untuk: Membuka browser dan menavigasi ke halaman "/admin/documents?type=ktp"
+    // Kegunaan: Membuka browser dan menavigasi ke halaman "/admin/documents?type=ktp"
     await page.goto('/admin/documents?type=ktp');
-    // Baris 381 digunakan untuk: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
+    // Kegunaan: Melakukan pengecekan (validasi) apakah hasilnya sesuai ekspektasi
     await expect(page.locator('select[name="type"]')).toHaveValue('ktp');
   });
 });
 
-// Baris 386 digunakan untuk: Mengelompokkan skenario pengujian tentang "Admin Document Review - Role Access"
+// Kegunaan: Mengelompokkan skenario pengujian tentang "Admin Document Review - Role Access"
 test.describe('Admin Document Review - Role Access', () => {
-  // Baris 388 digunakan untuk: Memulai eksekusi pengujian dengan judul "admin should access document review"
+  // Kegunaan: Memulai eksekusi pengujian dengan judul "admin should access document review"
   test('admin should access document review', async ({ page }) => {
-    // Baris 390 digunakan untuk: Membuka browser dan menavigasi ke halaman "/test/login/admin"
+    // Kegunaan: Membuka browser dan menavigasi ke halaman "/test/login/admin"
     await page.goto('/test/login/admin');
-    // Baris 392 digunakan untuk: Membuka browser dan menavigasi ke halaman "/admin/documents"
+    // Kegunaan: Membuka browser dan menavigasi ke halaman "/admin/documents"
     await page.goto('/admin/documents');
-    // Baris 394 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(page.locator('text=Antrian Review Dokumen')).toBeVisible();
   });
 
-  // Baris 398 digunakan untuk: Memulai eksekusi pengujian dengan judul "supervisor should access document review"
+  // Kegunaan: Memulai eksekusi pengujian dengan judul "supervisor should access document review"
   test('supervisor should access document review', async ({ page }) => {
-    // Baris 400 digunakan untuk: Membuka browser dan menavigasi ke halaman "/test/login/supervisor"
+    // Kegunaan: Membuka browser dan menavigasi ke halaman "/test/login/supervisor"
     await page.goto('/test/login/supervisor');
-    // Baris 402 digunakan untuk: Membuka browser dan menavigasi ke halaman "/admin/documents"
+    // Kegunaan: Membuka browser dan menavigasi ke halaman "/admin/documents"
     await page.goto('/admin/documents');
-    // Baris 404 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(page.locator('text=Antrian Review Dokumen')).toBeVisible();
   });
 
-  // Baris 408 digunakan untuk: Memulai eksekusi pengujian dengan judul "consultant should access document review"
+  // Kegunaan: Memulai eksekusi pengujian dengan judul "consultant should access document review"
   test('consultant should access document review', async ({ page }) => {
-    // Baris 410 digunakan untuk: Membuka browser dan menavigasi ke halaman "/test/login/consultant"
+    // Kegunaan: Membuka browser dan menavigasi ke halaman "/test/login/consultant"
     await page.goto('/test/login/consultant');
-    // Baris 412 digunakan untuk: Membuka browser dan menavigasi ke halaman "/admin/documents"
+    // Kegunaan: Membuka browser dan menavigasi ke halaman "/admin/documents"
     await page.goto('/admin/documents');
-    // Baris 414 digunakan untuk: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
+    // Kegunaan: Memastikan elemen tersebut benar-benar terlihat di layar oleh pengguna
     await expect(page.locator('text=Antrian Review Dokumen')).toBeVisible();
   });
 });
